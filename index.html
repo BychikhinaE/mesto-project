@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mesto</title>
+    <title>Место</title>
     <link rel="stylesheet" href="pages/index.css" />
   </head>
   <body>
     <div class="page">
       <!-- Шапка сайта -->
       <header class="header">
-        <img src="./images/logo_head.svg" class="header__logo">
+        <img src="./images/logo_head.svg" class="header__logo" alt="Места России.">
       </header>
       <!-- content -->
       <main class="content">
@@ -28,39 +28,38 @@
         </section>
 
         <!-- elements -->
-        <section class="elements">
+        <div class="elements">
             <figure class="elements__card">
               <img src="./images/karashaevsk.png" class="elements__photo" alt="">
-              <figcaption class="elements__caption">Карачаевск</figcaption>
               <button class="elements__like elements__like_act" name="like" value="like"></button>
-
+              <figcaption class="elements__caption">Карачаевск</figcaption>
             </figure>
             <figure class="elements__card">
+              <button class="elements__like" name="like" value="like"></button>
               <img src="./images/elbrus.png" class="elements__photo" alt="">
               <figcaption class="elements__caption">Гора Эльбрус</figcaption>
-              <button class="elements__like" name="like" value="like"></button>
             </figure>
             <figure class="elements__card">
+              <button class="elements__like" name="like" value="like"></button>
               <img src="./images/dombay.png" class="elements__photo" alt="">
               <figcaption class="elements__caption">Домбай</figcaption>
-              <button class="elements__like" name="like" value="like"></button>
             </figure>
             <figure class="elements__card">
+              <button class="elements__like" name="like" value="like"></button>
               <img src="./images/elbrus.png" class="elements__photo" alt="">
               <figcaption class="elements__caption">Гора Эльбрус</figcaption>
-              <button class="elements__like" name="like" value="like"></button>
             </figure>
             <figure class="elements__card">
+              <button class="elements__like" name="like" value="like"></button>
               <img src="./images/dombay.png" class="elements__photo" alt="">
               <figcaption class="elements__caption">Домбай</figcaption>
-              <button class="elements__like" name="like" value="like"></button>
             </figure>
             <figure class="elements__card">
+              <button class="elements__like" name="like" value="like"></button>
               <img src="./images/karashaevsk.png" class="elements__photo" alt="">
               <figcaption class="elements__caption">Карачаево-Черкесия</figcaption>
-              <button class="elements__like" name="like" value="like"></button>
             </figure>
-        </section>
+        </div>
       </main>
 
       <!-- footer -->
@@ -70,7 +69,7 @@
       <div class="popup ">
       <!-- <div class="popup popup_opened"> -->
         <div class="popup__container">
-          <button class="popup__close"><img src="./images/Close Icon.svg"
+          <button class="popup__close" name="close_popup"><img src="./images/Close_Icon.svg"
             alt="Закрыть окно редактирования профиля."></button>
           <h2 class="popup__title">Редактировать профиль</h2>
           <form action="#" class="popup__form" autocomplete="on">
