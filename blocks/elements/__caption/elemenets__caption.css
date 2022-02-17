@@ -1,0 +1,15 @@
+.elements__caption {
+font-size: 24px;
+line-height: 29px;
+font-weight: 900;
+box-sizing: border-box;
+text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 25px 73px 25px 21px;
+}
+/* .block {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+} */
