@@ -21,42 +21,42 @@
           <div class="profile__avatar"></div>
           <div class="profile__info">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <button class="profile__edit" name="edit"></button>
-          <p class="profile__bio">Исследователь океана</p>
+            <p class="profile__bio">Исследователь океана</p>
+            <button type="button" class="profile__edit" aria-label="Редактировать профиль."></button>
           </div>
-          <button class="profile__add" name="add"></button>
+          <button type="button" class="profile__add" aria-label="Добавить место."></button>
         </section>
 
         <!-- elements -->
         <div class="elements">
             <figure class="elements__card">
-              <img src="./images/karashaevsk.png" class="elements__photo" alt="">
-              <button class="elements__like elements__like_act" name="like" value="like"></button>
+              <button class="elements__like elements__like_act" type="button" aria-label="Нравится."></button>
+              <img src="./images/karashaevsk.png" class="elements__photo" alt="Каменный православный храм на склоне.">
               <figcaption class="elements__caption">Карачаевск</figcaption>
             </figure>
             <figure class="elements__card">
-              <button class="elements__like" name="like" value="like"></button>
-              <img src="./images/elbrus.png" class="elements__photo" alt="">
+              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <img src="./images/elbrus.png" class="elements__photo" alt="Очертание горы на горизонте.">
               <figcaption class="elements__caption">Гора Эльбрус</figcaption>
             </figure>
             <figure class="elements__card">
-              <button class="elements__like" name="like" value="like"></button>
-              <img src="./images/dombay.png" class="elements__photo" alt="">
+              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <img src="./images/dombay.png" class="elements__photo" alt="Вершина горного хребта.">
               <figcaption class="elements__caption">Домбай</figcaption>
             </figure>
             <figure class="elements__card">
-              <button class="elements__like" name="like" value="like"></button>
-              <img src="./images/elbrus.png" class="elements__photo" alt="">
+              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <img src="./images/elbrus.png" class="elements__photo" alt="Очертание горы на горизонте.">
               <figcaption class="elements__caption">Гора Эльбрус</figcaption>
             </figure>
             <figure class="elements__card">
-              <button class="elements__like" name="like" value="like"></button>
-              <img src="./images/dombay.png" class="elements__photo" alt="">
+              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <img src="./images/dombay.png" class="elements__photo" alt="Вершина горного хребта.">
               <figcaption class="elements__caption">Домбай</figcaption>
             </figure>
             <figure class="elements__card">
-              <button class="elements__like" name="like" value="like"></button>
-              <img src="./images/karashaevsk.png" class="elements__photo" alt="">
+              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <img src="./images/karashaevsk.png" class="elements__photo" alt="Каменный православный храм на склоне.">
               <figcaption class="elements__caption">Карачаево-Черкесия</figcaption>
             </figure>
         </div>
@@ -66,16 +66,15 @@
       <footer class="footer">
         <p class="footer__copyright">© 2020 Mesto Russia</p>
       </footer>
-      <div class="popup ">
-      <!-- <div class="popup popup_opened"> -->
+      <!-- <div class="popup "> -->
+      <div class="popup popup_opened">
         <div class="popup__container">
-          <button class="popup__close" name="close_popup"><img src="./images/Close_Icon.svg"
-            alt="Закрыть окно редактирования профиля."></button>
+          <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
           <h2 class="popup__title">Редактировать профиль</h2>
           <form action="#" class="popup__form" autocomplete="on">
            <input type="text" value="Жак-Ив Кусто" name="name" required autofocus class="popup__field">
            <input type="text" value="Исследователь океана" name="bio" required class="popup__field">
-           <button type="submit" name="profile" class="popup__button">Сохранить</button>
+           <button type="submit" class="popup__button">Сохранить</button>
           </form>
         </div>
       </div>
