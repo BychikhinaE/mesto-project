@@ -27,7 +27,7 @@
         </section>
 
         <!-- elements -->
-        <div class="elements">
+        <section class="elements" aria-label="Блок с фотографиями">
             <figure class="elements__card">
               <button class="elements__like elements__like_act" type="button" aria-label="Нравится."></button>
               <img src="./images/karashaevsk.png" class="elements__photo"
@@ -60,24 +60,24 @@
                 alt="Каменный православный храм на склоне.">
               <figcaption class="elements__caption">Карачаево-Черкесия</figcaption>
             </figure>
-        </div>
+        </section>
       </main>
 
       <!-- footer -->
       <footer class="footer">
         <p class="footer__copyright">© 2020 Mesto Russia</p>
       </footer>
-      <div class="popup">
+      <section class="popup">
         <div class="popup__container">
-          <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
           <h2 class="popup__title">Редактировать профиль</h2>
           <form action="#" class="popup__form" autocomplete="on">
            <input type="text" value="Жак-Ив Кусто" name="name" required autofocus class="popup__field">
            <input type="text" value="Исследователь океана" name="bio" required class="popup__field">
            <button type="submit" class="popup__button">Сохранить</button>
+           <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
           </form>
         </div>
-      </div>
+      </section>
     </div>
   </body>
 </html>
