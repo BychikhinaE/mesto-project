@@ -1,11 +1,10 @@
 .elements__card {
-border-radius: 10px;
-margin: 0;
-background-color: #fff;
-color: black;
-overflow: hidden;
-display: flex;
-flex-direction: column;
-position: relative;
+  border-radius: 10px;
+  margin: 0;
+  background-color: #fff;
+  color: black;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
-

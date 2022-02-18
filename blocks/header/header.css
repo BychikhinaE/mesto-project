@@ -1,7 +1,6 @@
 .header {
   border-bottom: 1px solid #545454;
-  padding-bottom: 40px;
-  width: 88%;
+  padding-bottom: 38px;
   max-width: 880px;
   margin: auto;
   box-sizing: border-box;
@@ -9,7 +8,7 @@
 
 @media screen and (max-width: 1000px) {
   .header {
-    padding-bottom: 30px;
-    width: 100%;
+    padding-bottom: 28px;
+    padding-left: 27px;
   }
 }

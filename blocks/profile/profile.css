@@ -1,10 +1,10 @@
 .profile {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   padding-bottom: 50px;
   color: white;
   flex-wrap: wrap;
-
 }
 
 @media screen and (max-width: 550px) {
