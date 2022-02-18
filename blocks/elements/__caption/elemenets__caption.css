@@ -7,4 +7,6 @@
   white-space: nowrap;
   overflow: hidden;
   padding: 25px 73px 25px 21px;
+  background-color: white;
+  color: black;
 }
