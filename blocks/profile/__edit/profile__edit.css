@@ -9,13 +9,14 @@
   background-size: 10px 10px;
   background-color: transparent;
   transition: opacity .5s ease;
-  position: absolute;
-  top: 15px;
-  right: -40px;
+  margin-left: 18px;
+  padding: 0;
+  flex-shrink: 0;
 }
 
 .profile__edit:hover {
   opacity: .6;
+  cursor: pointer;
   }
 
   @media screen and (max-width: 550px) {
@@ -23,6 +24,7 @@
       width: 18px;
       height: 18px;
       background-size: 6px 6px;
+      position: absolute;
       top: 35px;
       right: -28px;
     }

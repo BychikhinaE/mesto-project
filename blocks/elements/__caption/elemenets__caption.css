@@ -1,12 +1,10 @@
 .elements__caption {
-  font-size: 24px;
-  line-height: 29px;
-  font-weight: 900;
   box-sizing: border-box;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  padding: 25px 73px 25px 21px;
+  padding: 0 20px;
   background-color: white;
   color: black;
+  display: flex;
+  align-items: center;
+  height: 78px;
 }
+/* внутри текстовый элемент,который обрезаем..то есть тектостовому блоку можно задать фикс высоту */

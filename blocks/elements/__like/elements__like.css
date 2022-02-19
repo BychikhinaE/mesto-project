@@ -1,7 +1,4 @@
 .elements__like {
-  position: absolute;
-  bottom: 30px;
-  right: 20px;
   transition: opacity .5s ease;
   background: url(../../../images/like.svg) no-repeat;
   border: none;
@@ -9,6 +6,7 @@
   height: 19px;
   width: 22px;
   padding: 0;
+  margin-left: auto;
 }
 
 .elements__like:hover {

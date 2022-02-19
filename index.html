@@ -18,49 +18,67 @@
         <!-- profile -->
         <section class="profile">
           <div class="profile__avatar"></div>
-          <div class="profile__info">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <p class="profile__bio">Исследователь океана</p>
+          <div class="profile__place-info">
+            <div class="profile__info">
+              <h1 class="profile__name">Жак-Ив Кусто</h1>
+              <p class="profile__bio">Исследователь океана</p>
+            </div>
             <button type="button" class="profile__edit" aria-label="Редактировать профиль."></button>
           </div>
           <button type="button" class="profile__add" aria-label="Добавить место."></button>
         </section>
 
         <!-- elements -->
-        <section class="elements" aria-label="Блок с фотографиями">
-            <figure class="elements__card">
-              <button class="elements__like elements__like_act" type="button" aria-label="Нравится."></button>
+        <section aria-label="Блок с фотографиями">
+        <ul class="elements" >
+            <li class="elements__card">
               <img src="./images/karashaevsk.png" class="elements__photo"
                 alt="Каменный православный храм на склоне.">
-              <figcaption class="elements__caption">Карачаевск</figcaption>
-            </figure>
-            <figure class="elements__card">
-              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <div class="elements__caption">
+                <h2 class="elements__title">Карачаевск</h2>
+                <button class="elements__like elements__like_act" type="button" aria-label="Нравится."></button>
+              </div>
+            </li>
+            <li class="elements__card">
               <img src="./images/elbrus.png" class="elements__photo" alt="Очертание горы на горизонте.">
-              <figcaption class="elements__caption">Гора Эльбрус</figcaption>
-            </figure>
-            <figure class="elements__card">
-              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <div class="elements__caption">
+                <h2 class="elements__title">Гора Эльбрус</h2>
+                <button class="elements__like" type="button" aria-label="Нравится."></button>
+              </div>
+            </li>
+            <li class="elements__card">
               <img src="./images/dombay.png" class="elements__photo" alt="Вершина горного хребта.">
-              <figcaption class="elements__caption">Домбай</figcaption>
-            </figure>
-            <figure class="elements__card">
-              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <div class="elements__caption">
+                <h2 class="elements__title">Домбай</h2>
+                <button class="elements__like" type="button" aria-label="Нравится."></button>
+              </div>
+            </li>
+            <li class="elements__card">
               <img src="./images/elbrus.png" class="elements__photo" alt="Очертание горы на горизонте.">
-              <figcaption class="elements__caption">Гора Эльбрус</figcaption>
-            </figure>
-            <figure class="elements__card">
-              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <div class="elements__caption">
+                <h2 class="elements__title">Гора Эльбрус</h2>
+                <button class="elements__like" type="button" aria-label="Нравится."></button>
+              </div>
+            </li>
+            <li class="elements__card">
+
               <img src="./images/dombay.png" class="elements__photo" alt="Вершина горного хребта.">
-              <figcaption class="elements__caption">Домбай</figcaption>
-            </figure>
-            <figure class="elements__card">
-              <button class="elements__like" type="button" aria-label="Нравится."></button>
+              <div class="elements__caption">
+                <h2 class="elements__title">Домбай</h2>
+                <button class="elements__like" type="button" aria-label="Нравится."></button>
+              </div>
+            </li>
+            <li class="elements__card">
+
               <img src="./images/karashaevsk.png" class="elements__photo"
                 alt="Каменный православный храм на склоне.">
-              <figcaption class="elements__caption">Карачаево-Черкесия</figcaption>
-            </figure>
-        </section>
+              <div class="elements__caption">
+                <h2 class="elements__title">Карачаево-Черкесия</h2>
+                <button class="elements__like" type="button" aria-label="Нравится."></button>
+              </div>
+            </li>
+        </ul>
+      </section>
       </main>
 
       <!-- footer -->
@@ -70,12 +88,12 @@
       <section class="popup">
         <div class="popup__container">
           <h2 class="popup__title">Редактировать профиль</h2>
-          <form action="#" class="popup__form" autocomplete="on">
+          <form action="#" class="popup__form" autocomplete="on" name="edit">
            <input type="text" value="Жак-Ив Кусто" name="name" required autofocus class="popup__field">
            <input type="text" value="Исследователь океана" name="bio" required class="popup__field">
            <button type="submit" class="popup__button">Сохранить</button>
-           <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
           </form>
+          <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>
       </section>
     </div>

@@ -1,0 +1,19 @@
+.profile__place-info {
+  display: flex;
+  align-items: baseline;
+  max-width: calc(100% - 362px);
+  position: relative;
+}
+
+@media screen and (max-width: 750px) {
+  .profile__place-info {
+    max-width: calc(100% - 200px);
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .profile__place-info {
+    max-width: 85%;
+    align-items: center;
+  }
+}
