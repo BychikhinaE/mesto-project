@@ -2,5 +2,7 @@
   max-width: 100%;
   object-fit: cover;
   flex-grow: 1;
+  cursor: pointer;
+  height: 282px;
 }
 

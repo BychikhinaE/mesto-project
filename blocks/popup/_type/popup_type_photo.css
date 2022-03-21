@@ -1,0 +1,12 @@
+.popup_type_photo {
+  background-color: rgba(0, 0, 0, .9);
+  padding: 90px 0 68px;
+}
+
+@media screen and (max-width: 1000px) {
+  .popup__type_photo {
+    box-sizing: border-box;
+    padding: 46px 40px 65px;
+
+  }
+}
