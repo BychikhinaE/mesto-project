@@ -8,6 +8,5 @@ max-height: 562px;
 @media screen and (max-width: 1000px) {
   .popup__photo {
     max-width: 100%;
-
   }
 }
