@@ -120,6 +120,7 @@ const subtitlePhoto = fullPhoto.querySelector(".popup__subtitle");
 cardPhotos.forEach(function (item) {
   item.addEventListener("click", function () {
     popupPhoto.src = item.src;
+    popupPhoto.alt = item.alt;
     subtitlePhoto.textContent = item.alt;
     fullPhoto.classList.add("popup_opened");
   });
