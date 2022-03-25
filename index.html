@@ -49,19 +49,19 @@
            <input type="text" value="Исследователь океана" name="bio" required class="popup__field" id="bio">
            <button type="submit" class="popup__button">Сохранить</button>
           </form>
-          <button class="popup__close popup__close_type_profile" type="button" aria-label="Закрыть окно."></button>
+          <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>
       </section>
 
       <section class="popup popup_type_place">
         <div class="popup__container popup__container_type_main">
           <h2 class="popup__title">Новое место</h2>
-          <form class="popup__form"  name="newPlace">
+          <form class="popup__form"  name="newPlace" id="formPlace">
            <input type="text" placeholder="Название" name="namePlace" required class="popup__field" id="namePlace">
            <input type="url" placeholder="Ссылка на картинку" name="link" required class="popup__field" id="link">
            <button type="submit" class="popup__button">Создать</button>
           </form>
-          <button class="popup__close popup__close_type_place" type="button" aria-label="Закрыть окно."></button>
+          <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>
       </section>
 
@@ -69,7 +69,7 @@
         <div class="popup__container popup__container_type_photo">
           <img class="popup__photo" src="#" alt="">
           <h2 class="popup__subtitle">Новое место</h2>
-          <button class="popup__close popup__close_type_photo" type="button" aria-label="Закрыть окно."></button>
+          <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>
       </section>
     </div>
@@ -77,8 +77,10 @@
       <!-- шаблон добавления карточки в раздел elements-->
     <template id="card-template">
       <li class="elements__card">
-        <img src="./images/karashaevsk.png" class="elements__photo"
+
+          <img src="./images/karashaevsk.png" class="elements__photo"
           alt="Каменный православный храм на склоне.">
+
         <div class="elements__caption">
           <h2 class="elements__title">Карачаево-Черкесия</h2>
           <button class="elements__like" type="button" aria-label="Нравится."></button>
