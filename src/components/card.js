@@ -1,25 +1,22 @@
-const content = document.querySelector('.content');
-const buttonEdit = content.querySelector('.profile__edit');
-const buttonAdd = content.querySelector('.profile__add');
-const formProfile = document.querySelector('.popup_type_profile');
-const nameInput = formProfile.querySelector('#name');
-const jobInput = formProfile.querySelector('#bio');
-const profileName = content.querySelector('.profile__name');
-const profileBio = content.querySelector('.profile__bio');
-const formElement = document.querySelector('.popup_type_place');
-const namePlace = formElement.querySelector('#namePlace');
-const link = formElement.querySelector('#link');
-const cardsContainer = content.querySelector('.elements');
+// функции для работы с карточками проекта Mesto
+//объявить функию для создания карточки
+import {closePopup, openPopup} from './utils';
+
+export const newPlace = document.querySelector('.popup_type_place');
+const namePlace = newPlace.querySelector('#namePlace');
+const link = newPlace.querySelector('#link');
+const cardsContainer = document.querySelector('.elements');
 const fullPhoto = document.querySelector('.popup_type_photo');
 const popupPhoto = fullPhoto.querySelector('.popup__photo');
 const subtitlePhoto = fullPhoto.querySelector('.popup__subtitle');
+const buttonAdd = document.querySelector('.profile__add');
 
-//объявить функию Открыть попап
-  function openPopup(popupElement) {
-    popupElement.classList.add('popup_opened');
-  };
+ //добавить кнопкe Плюс_карточка функцию Открыть попап
+ buttonAdd.addEventListener('click', function () {
+  openPopup(newPlace);
+});
 
-//объявить функию для создания карточки
+//Функция создания новой карточки
 function createCard(nameValue, urlValue) {
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.elements__card').cloneNode(true);
@@ -54,49 +51,15 @@ function addCard(nameValue, urlValue) {
   cardsContainer.prepend(createCard(nameValue, urlValue));
 }
 
-//объявить функию Закрыть попап
-function closePopup(popupElement) {
-  popupElement.classList.remove('popup_opened');
-};
-
-//добавить всем кнопкам функцию Закрыть попап
-const buttonCloseAll = document.querySelectorAll('.popup__close')
-buttonCloseAll.forEach(function(item){
-  item.addEventListener('click', function(){
-    const popupOpened = document.querySelector('.popup_opened');
-    closePopup(popupOpened)
-  })
-});
-
-// Обработчик «отправки» формы изменений в профиле
-function submitProfile(evt) {
-  evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileBio.textContent = jobInput.value;
-  closePopup(formProfile);
-};
-
-// Обработчик «отправки» формы карточки
-function submitCard(evt) {
+ // Обработчик публикации новой карточки из формы
+ export function submitCard(evt) {
   evt.preventDefault();
   addCard(namePlace.value, link.value);
-  closePopup(formElement);
-  formElement.querySelector('#formPlace').reset();
+  closePopup(newPlace);
+  newPlace.querySelector('#formPlace').reset();
 };
 
-//добавить кнопкe Редакт.профиль функцию Открыть попап
-buttonEdit.addEventListener('click', function () {
-  openPopup(formProfile);
-});
 
-//добавить кнопкe Плюс_карточка функцию Открыть попап
-buttonAdd.addEventListener('click', function () {
-  openPopup(formElement);
-});
-
-// Прикрепляем обработчик к формам:
-formProfile.addEventListener('submit', submitProfile);
-formElement.addEventListener('submit', submitCard);
 
 //Шесть карточек «из коробки»
 const initialCards = [
@@ -129,3 +92,4 @@ const initialCards = [
 initialCards.forEach(function(item){
   addCard(item.name, item.link);
 });
+
