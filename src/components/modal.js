@@ -8,21 +8,13 @@ import {openPopup, closePopup} from './utils';
   const jobInput = formProfile.querySelector('#bio');
   const profileName = content.querySelector('.profile__name');
   const profileBio = content.querySelector('.profile__bio');
-  const buttonCloseAll = document.querySelectorAll('.popup__close')
-
-//Закрыть попап кнопкой Esc
-  document.addEventListener('keydown', function(evt){
-    if(evt.key === 'Escape'){
-      const popupElement = document.querySelector('.popup_opened');
-      closePopup(popupElement);
-    }
-  })
+  const buttonCloseAll = document.querySelectorAll('.popup__close');
 
   //добавить всем кнопкам функцию Закрыть попап
   buttonCloseAll.forEach(function(item){
     item.addEventListener('click', function(){
-      const popupOpened = document.querySelector('.popup_opened');
-      closePopup(popupOpened)
+      const openedPopup = document.querySelector('.popup_opened');
+      closePopup(openedPopup)
     })
   });
 

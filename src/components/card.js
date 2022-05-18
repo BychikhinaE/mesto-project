@@ -3,13 +3,16 @@
 import {closePopup, openPopup} from './utils';
 
 export const newPlace = document.querySelector('.popup_type_place');
-const namePlace = newPlace.querySelector('#namePlace');
-const link = newPlace.querySelector('#link');
+const formPlace = document.forms.formPlace;
+const namePlace = formPlace.elements.namePlace;
+const link = formPlace.elements.link;
+const buttonCreatePlace = formPlace.elements.buttonCreatePlace;
 const cardsContainer = document.querySelector('.elements');
 const fullPhoto = document.querySelector('.popup_type_photo');
 const popupPhoto = fullPhoto.querySelector('.popup__photo');
 const subtitlePhoto = fullPhoto.querySelector('.popup__subtitle');
 const buttonAdd = document.querySelector('.profile__add');
+const cardTemplate = document.querySelector('#card-template').content;
 
  //добавить кнопкe Плюс_карточка функцию Открыть попап
  buttonAdd.addEventListener('click', function () {
@@ -18,7 +21,6 @@ const buttonAdd = document.querySelector('.profile__add');
 
 //Функция создания новой карточки
 function createCard(nameValue, urlValue) {
-  const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.elements__card').cloneNode(true);
   const cardLike = cardElement.querySelector('.elements__like');
   const cardPhoto = cardElement.querySelector('.elements__photo');
@@ -56,7 +58,9 @@ function addCard(nameValue, urlValue) {
   evt.preventDefault();
   addCard(namePlace.value, link.value);
   closePopup(newPlace);
-  newPlace.querySelector('#formPlace').reset();
+  formPlace.reset();
+  buttonCreatePlace.classList.add('popup__button_disabled');
+  buttonCreatePlace.disabled = true;
 };
 
 
