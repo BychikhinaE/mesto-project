@@ -1,0 +1,11 @@
+.spinner {
+background: url(../../images/spinner-fill-svgrepo-com.svg) no-repeat center;
+background-size: 100px;
+width: 100%;
+height: 100%;
+position: fixed;
+top: 0;
+left: 0;
+display: none;
+}
+
