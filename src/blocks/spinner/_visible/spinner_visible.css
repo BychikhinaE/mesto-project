@@ -1,0 +1,9 @@
+@keyframes spinner {
+  to {transform: rotate(-360deg);
+  }
+}
+
+.spinner_visible {
+display: block;
+animation: spinner 5s linear infinite;
+}

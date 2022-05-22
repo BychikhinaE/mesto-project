@@ -6,6 +6,7 @@
   background-size: cover;
   margin-right: 30px;
   flex-shrink: 0;
+  position: relative;
 }
 
 @media screen and (max-width: 550px) {
@@ -13,3 +14,4 @@
     margin-right: 0;
   }
 }
+

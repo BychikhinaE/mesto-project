@@ -17,7 +17,12 @@
 
         <!-- profile -->
         <section class="profile">
-          <div class="profile__avatar"></div>
+
+            <div class="profile__avatar">
+              <button type="button" class="profile__avatar-edit" aria-label="Редактировать фото профиля."></button>
+            </div>
+
+
           <div class="profile__place-info">
             <div class="profile__info">
               <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -41,11 +46,26 @@
       </footer>
 
       <!-- popup collection-->
+      <!-- Форма фото-профиля -->
+      <div class="popup popup_type_avatar">
+        <div class="popup__container popup__container_type_main">
+          <h2 class="popup__title">Обновить аватар</h2>
+          <form class="popup__form" name="avatar" novalidate>
+            <div class="popup__set">
+              <input type="url" placeholder="Ссылка на фото" name="avatar" required class="popup__input" id="avatar">
+              <span class="popup__error avatar-error"></span>
+            </div>
+           <button type="submit" class="popup__button popup__button_disabled">Сохранить</button>
+          </form>
+          <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
+        </div>
+      </div>
+
       <!-- Форма профиля -->
       <div class="popup popup_type_profile">
         <div class="popup__container popup__container_type_main">
           <h2 class="popup__title">Редактировать профиль</h2>
-          <form class="popup__form" autocomplete="on" name="edit" novalidate>
+          <form class="popup__form" autocomplete="on" name="profile" novalidate>
             <div class="popup__set">
               <input type="text" value="Жак-Ив Кусто" name="name" required class="popup__input" id="name"
                minlength="2" maxlength="40">
@@ -59,7 +79,7 @@
               <span class="popup__error bio-error"></span>
           </div>
 
-           <button type="submit" class="popup__button">Сохранить</button>
+           <button type="submit" class="popup__button"  name="buttonSubmitProfile">Сохранить</button>
           </form>
           <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>
@@ -79,7 +99,7 @@
               <input type="url" placeholder="Ссылка на картинку" name="link" required class="popup__input" id="link">
               <span class="popup__error link-error"></span>
             </div>
-           <button type="submit" class="popup__button" name="buttonCreatePlace">Создать</button>
+           <button type="submit" class="popup__button popup__button_disabled" name="buttonCreatePlace">Создать</button>
           </form>
           <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>
@@ -93,6 +113,27 @@
           <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>
       </div>
+
+      <!-- Подтверждение удаления карточки места -->
+      <div class="popup popup_type_delete">
+        <div class="popup__container popup__container_type_main">
+          <h2 class="popup__title">Вы уверены?</h2>
+          <button type="button" class="popup__button" id="questionDelete">Да</button>
+          <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
+        </div>
+      </div>
+
+      <!-- Что-топошло не тааааак -->
+      <div class="popup popup_type_error">
+        <div class="popup__container popup__container_type_main">
+          <h2 class="popup__title"></h2>
+          <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
+        </div>
+      </div>
+
+      <!-- Спиннер -->
+      <div class="spinner"></div>
+
     </div>
 
       <!-- шаблон добавления карточки в раздел elements-->
@@ -104,7 +145,11 @@
 
         <div class="elements__caption">
           <h2 class="elements__title">Карачаево-Черкесия</h2>
-          <button class="elements__like" type="button" aria-label="Нравится."></button>
+          <div class="elements__like-box">
+            <button class="elements__like" type="button" aria-label="Нравится."></button>
+            <span class="elements__count-like"></span>
+          </div>
+
         </div>
         <button class="elements__delete" type="button" aria-label="Удалить карточку"></button>
       </li>
