@@ -8,4 +8,4 @@ HTML CSS БЭМ flex grid адаптивная верстка JS Webpack
 
 # Ссылка на проект
 
-
+https://bychikhinae.github.io/mesto-project
