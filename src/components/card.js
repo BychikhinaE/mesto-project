@@ -50,18 +50,29 @@ function createCard(nameValue, urlValue, countLike, ownerId, card_id) {
   if( countLike.some(function(item){
       return item._id === profileName.dataset.myId})
     )
-  {cardLike.classList.add('elements__like_act');}
+  {cardLike.classList.add('elements__like_act')}
 
   cardLike.addEventListener('click', function () {
     if( cardLike.classList.contains('elements__like_act'))
       {
-      cardLike.classList.remove('elements__like_act');
-      disLike(cardElement.dataset.cardId);
-      cardCountLike.textContent =Number(cardCountLike.textContent) - 1;
+      disLike(cardElement.dataset.cardId)
+      .then((res)=>{
+        cardCountLike.textContent = res.likes.length;
+        cardLike.classList.remove('elements__like_act');
+      })
+      .catch(err => {
+        showError(err)
+      })
+
     } else {
-      cardLike.classList.add('elements__like_act');
-  plusLike(cardElement.dataset.cardId);
-  cardCountLike.textContent = Number(cardCountLike.textContent) + 1;
+      plusLike(cardElement.dataset.cardId)
+      .then((res)=>{
+        cardCountLike.textContent = res.likes.length;
+        cardLike.classList.add('elements__like_act');
+      })
+      .catch(err => {
+        showError(err)
+      })
      }
   });
 
@@ -79,3 +90,4 @@ function createCard(nameValue, urlValue, countLike, ownerId, card_id) {
 export function addCard(nameValue, urlValue, countLike, ownerId, card_id) {
   cardsContainer.prepend(createCard(nameValue, urlValue, countLike, ownerId, card_id));
 }
+
