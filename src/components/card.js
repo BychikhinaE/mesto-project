@@ -33,24 +33,19 @@ class Card {
     this._countLike = data.likes;
     this._ownerId = data.owner._id;
     this._card_id = data._id;
-    this._selector = selector; //   const cardElement = document.querySelector(templateSelector).content.querySelector('.elements__card').cloneNode(true);
-
+    this._selector = selector;
+  }
+  _getElement() {
+    //   const cardElement = document.querySelector(templateSelector).content.querySelector('.elements__card').cloneNode(true);
     const cardElement = document
       .querySelector(this._selector)
       .content.querySelector(".elements__card")
       .cloneNode(true);
-    const cardCountLike = cardElement.querySelector(".elements__count-like");
-    const cardLike = cardElement.querySelector(".elements__like");
-    const cardPhoto = cardElement.querySelector(".elements__photo");
-    const deleteButton = cardElement.querySelector(".elements__delete");
 
-    cardElement.querySelector(".elements__title").textContent = nameValue;
-    cardPhoto.alt = nameValue;
-    cardPhoto.src = urlValue;
-    cardCountLike.textContent = countLike.length;
-    cardElement.dataset.cardOwnerId = ownerId;
-    cardElement.dataset.cardId = card_id;
-
+    return cardElement;
+  }
+  _dell() {
+    //Иконка удалить
     if (cardElement.dataset.cardOwnerId !== profileName.dataset.myId) {
       deleteButton.style.display = "none";
     } else {
@@ -60,7 +55,9 @@ class Card {
         cardIdDelete = cardElement.dataset.cardId;
       });
     }
-
+  }
+  _like() {
+    //like
     if (
       countLike.some(function (item) {
         return item._id === profileName.dataset.myId;
@@ -90,17 +87,55 @@ class Card {
           });
       }
     });
-
-    cardPhoto.addEventListener("click", function () {
-      popupPhoto.src = urlValue;
-      popupPhoto.alt = nameValue;
-      subtitlePhoto.textContent = nameValue;
-      openPopup(fullPhoto);
-    });
-
-    return cardElement;
+  }
+  _openFoto() {
+    this._element
+      .querySelector(".elements__photo")
+      .addEventListener("click", function () {
+        popupPhoto.src = urlValue;
+        popupPhoto.alt = nameValue;
+        subtitlePhoto.textContent = nameValue;
+        openPopup(fullPhoto);
+      });
+  }
+  generate() {
+    this._element = this._getElement();
+    this._element.querySelector(".elements__title").textContent =
+      this._nameValue;
+    this._element.querySelector(".elements__photo").alt = this._nameValue;
+    this._element.querySelector(".elements__photo").src = this._urlValue;
+    this._element.querySelector(".elements__count-like").textContent =
+      this._countLike.length;
+    this._element.dataset.cardOwnerId = ownerId;
+    this._element.dataset.cardId = card_id;
+    this._dell();
+    this._like();
+    this._openFoto();
+    return this._element;
   }
 }
+
+//объявить функию для добавления карточки
+
+export function addCard(nameValue, urlValue, countLike, ownerId, card_id) {
+  cardsContainer.prepend(
+    createCard(nameValue, urlValue, countLike, ownerId, card_id)
+  );
+}
+
+/*
+const cardCountLike = cardElement.querySelector(".elements__count-like");
+const cardLike = cardElement.querySelector(".elements__like");
+const cardPhoto = cardElement.querySelector(".elements__photo");
+const deleteButton = cardElement.querySelector(".elements__delete");
+
+// cardElement.querySelector(".elements__title").textContent = nameValue;
+//cardPhoto.alt = nameValue;
+//cardPhoto.src = urlValue;
+//cardCountLike.textContent = countLike.length;
+//cardElement.dataset.cardOwnerId = ownerId;
+//cardElement.dataset.cardId = card_id;
+*/
 
 // function createCard(nameValue, urlValue, countLike, ownerId, card_id) {
 //   const cardElement = document.querySelector(templateSelector).content.querySelector('.elements__card').cloneNode(true);
@@ -166,8 +201,10 @@ class Card {
 // };
 
 //объявить функию для добавления карточки
+/*
 export function addCard(nameValue, urlValue, countLike, ownerId, card_id) {
   cardsContainer.prepend(
     createCard(nameValue, urlValue, countLike, ownerId, card_id)
   );
 }
+*/
