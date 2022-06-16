@@ -2,14 +2,14 @@
 
 import './pages/index.css'
 
-import {closePopup, renderLoading} from './components/utils.js'
+import {closePopup, renderLoading} from './utils/utils.js'
 
 import {showSpinner, popupProfile, formProfile, popupAvatar,   profileName, profileBio, formAvatar, profileAvatar, buttonSubmitProfile, buttonSubmitAvatar, showError} from './components/modal.js'
 
 import {popupPlace, addCard, formPlace, buttonCreatePlace, buttonQuestionDelete, popupQuestionDelete, cardIdDelete} from './components/card.js'
 
 import {enableValidation} from './components/validate.js'
-import {startLoad, loadCards, editProfile, editAvatar,  postNewCard, deleteCard } from './components/api.js'
+import {startLoad, loadCards, editProfile, editAvatar,  postNewCard, deleteCard } from './components/Api.js'
 const nameInput = formProfile.elements.name;
 const jobInput = formProfile.elements.bio;
 
