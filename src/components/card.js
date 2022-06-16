@@ -24,14 +24,19 @@ buttonAdd.addEventListener("click", function () {
 });
 
 //Функция создания новой карточки
-//123
+//createCard(nameValue, urlValue, countLike, ownerId, card_id)
+//           card.name, card.link, card.likes, card.owner._id, card._id
 class Card {
-  constructor(
-    { nameValue, urlValue, countLike, ownerId, card_id },
-    templateSelector
-  ) {
+  constructor({ data }, selector) {
+    this._nameValue = data.name;
+    this._urlValue = data.link;
+    this._countLike = data.likes;
+    this._ownerId = data.owner._id;
+    this._card_id = data._id;
+    this._selector = selector; //   const cardElement = document.querySelector(templateSelector).content.querySelector('.elements__card').cloneNode(true);
+
     const cardElement = document
-      .querySelector(templateSelector)
+      .querySelector(this._selector)
       .content.querySelector(".elements__card")
       .cloneNode(true);
     const cardCountLike = cardElement.querySelector(".elements__count-like");
