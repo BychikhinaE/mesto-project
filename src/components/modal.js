@@ -1,5 +1,5 @@
 // работу модальных окон
-import {openPopup, closePopup} from './utils';
+import {openPopup, closePopup} from '../utils/utils';
 
 const content = document.querySelector('.content');
 const spinner = document.querySelector('.spinner');
