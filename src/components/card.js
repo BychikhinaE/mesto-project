@@ -2,7 +2,7 @@
 //объявить функию для создания карточки
 import { openPopup } from "../utils/utils";
 import { profileName } from "./modal.js";
-import { plusLike, disLike } from "./Api";
+//import { plusLike, disLike } from "./api";
 
 export const popupPlace = document.querySelector(".popup_type_place");
 export const popupQuestionDelete = document.querySelector(".popup_type_delete");
@@ -10,14 +10,15 @@ export const buttonQuestionDelete =
   popupQuestionDelete.querySelector("#questionDelete");
 export const formPlace = document.forms.formPlace;
 export const buttonCreatePlace = formPlace.querySelector(".popup__button");
-const cardsContainer = document.querySelector(".elements");
+export const cardsContainer = document.querySelector(".elements");
 const fullPhoto = document.querySelector(".popup_type_photo");
 const popupPhoto = fullPhoto.querySelector(".popup__photo");
 const subtitlePhoto = fullPhoto.querySelector(".popup__subtitle");
 const buttonAdd = document.querySelector(".profile__add");
-//const cardTemplate = document.querySelector('#card-template').content;
+const cardTemplate = document.querySelector("#card-template").content;
 export let cardIdDelete = 0;
 
+export const selector = ".elements__card";
 //добавить кнопкe Плюс_карточка функцию Открыть попап
 buttonAdd.addEventListener("click", function () {
   openPopup(popupPlace);
@@ -26,8 +27,9 @@ buttonAdd.addEventListener("click", function () {
 //Функция создания новой карточки
 //createCard(nameValue, urlValue, countLike, ownerId, card_id)
 //           card.name, card.link, card.likes, card.owner._id, card._id
-class Card {
-  constructor({ data }, selector) {
+
+export class Card {
+  constructor(data, selector) {
     this._nameValue = data.name;
     this._urlValue = data.link;
     this._countLike = data.likes;
@@ -35,15 +37,35 @@ class Card {
     this._card_id = data._id;
     this._selector = selector;
   }
+
   _getElement() {
-    //   const cardElement = document.querySelector(templateSelector).content.querySelector('.elements__card').cloneNode(true);
-    const cardElement = document
-      .querySelector(this._selector)
-      .content.querySelector(".elements__card")
+    console.log("_getElement");
+    //  const cardElement = cardTemplate.querySelector('.elements__card').cloneNode(true);
+    //  const cardElement = document.querySelector(templateSelector).content.querySelector('.elements__card').cloneNode(true);
+    const cardElement = cardTemplate
+      .querySelector(".elements__card")
       .cloneNode(true);
 
     return cardElement;
   }
+
+  generate() {
+    console.log("generate");
+    this._element = this._getElement();
+    this._element.querySelector(".elements__title").textContent =
+      this._nameValue;
+    this._element.querySelector(".elements__photo").alt = this._nameValue;
+    this._element.querySelector(".elements__photo").src = this._urlValue;
+    this._element.querySelector(".elements__count-like").textContent =
+      this._countLike.length;
+    console.log(this._element);
+    // this._element.dataset.cardOwnerId = ownerId;
+    //this._element.dataset.cardId = card_id;
+
+    return this._element;
+  }
+
+  /*
   _dell() {
     //Иконка удалить
     if (cardElement.dataset.cardOwnerId !== profileName.dataset.myId) {
@@ -98,31 +120,17 @@ class Card {
         openPopup(fullPhoto);
       });
   }
-  generate() {
-    this._element = this._getElement();
-    this._element.querySelector(".elements__title").textContent =
-      this._nameValue;
-    this._element.querySelector(".elements__photo").alt = this._nameValue;
-    this._element.querySelector(".elements__photo").src = this._urlValue;
-    this._element.querySelector(".elements__count-like").textContent =
-      this._countLike.length;
-    this._element.dataset.cardOwnerId = ownerId;
-    this._element.dataset.cardId = card_id;
-    this._dell();
-    this._like();
-    this._openFoto();
-    return this._element;
-  }
+*/
 }
-
 //объявить функию для добавления карточки
 
-export function addCard(nameValue, urlValue, countLike, ownerId, card_id) {
-  cardsContainer.prepend(
-    createCard(nameValue, urlValue, countLike, ownerId, card_id)
-  );
+//export const card = new Card(data, selector);
+/*
+export function addCard(data) {
+  console.log("addCard");
+  cardsContainer.prepend(Card(data, selector));
 }
-
+*/
 /*
 const cardCountLike = cardElement.querySelector(".elements__count-like");
 const cardLike = cardElement.querySelector(".elements__like");
