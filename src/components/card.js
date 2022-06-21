@@ -15,7 +15,7 @@ const fullPhoto = document.querySelector(".popup_type_photo");
 const popupPhoto = fullPhoto.querySelector(".popup__photo");
 const subtitlePhoto = fullPhoto.querySelector(".popup__subtitle");
 const buttonAdd = document.querySelector(".profile__add");
-const cardTemplate = document.querySelector("#card-template").content;
+//const cardTemplate = document.querySelector("#card-template").content;
 export let cardIdDelete = 0;
 
 export const selector = ".elements__card";
@@ -25,45 +25,102 @@ buttonAdd.addEventListener("click", function () {
 });
 
 //Функция создания новой карточки
-//createCard(nameValue, urlValue, countLike, ownerId, card_id)
-//           card.name, card.link, card.likes, card.owner._id, card._id
-
 export class Card {
-  constructor(data, selector) {
-    this._nameValue = data.name;
-    this._urlValue = data.link;
+  constructor({data,
+    handleCardClick},
+    checkId,
+    selector) {
+    this._name = data.name;
+    this._url = data.link;
     this._countLike = data.likes;
     this._ownerId = data.owner._id;
     this._card_id = data._id;
     this._selector = selector;
+    this._handleCardClick = handleCardClick;
+    this._checkId = checkId;
   }
 
   _getElement() {
     console.log("_getElement");
-    //  const cardElement = cardTemplate.querySelector('.elements__card').cloneNode(true);
-    //  const cardElement = document.querySelector(templateSelector).content.querySelector('.elements__card').cloneNode(true);
-    const cardElement = cardTemplate
-      .querySelector(".elements__card")
-      .cloneNode(true);
+    const cardElement = document.querySelector(this._selector).content.querySelector(".elements__card").cloneNode(true);
 
     return cardElement;
   }
-
+//публичный метод, который возвращает полностью работоспособный
+//и наполненный данными элемент карточки
   generate() {
     console.log("generate");
+    // Запишем разметку в приватное поле _element
     this._element = this._getElement();
-    this._element.querySelector(".elements__title").textContent =
-      this._nameValue;
-    this._element.querySelector(".elements__photo").alt = this._nameValue;
-    this._element.querySelector(".elements__photo").src = this._urlValue;
-    this._element.querySelector(".elements__count-like").textContent =
-      this._countLike.length;
+    this._setEventListeners();
+
+// Добавим данные
+    this._element.querySelector(".elements__title").textContent = this._name;
+    const cardPhoto = this._element.querySelector('.elements__photo');
+    cardPhoto.alt = this._name;
+    cardPhoto.src = this._url;
+    const cardCountLike = this._element.querySelector('.elements__count-like');
+    cardCountLike.textContent = this._countLike.length;
     console.log(this._element);
-    // this._element.dataset.cardOwnerId = ownerId;
-    //this._element.dataset.cardId = card_id;
+
+    const cardLike = this._element.querySelector('.elements__like');
+    const deleteButton = this._element.querySelector('.elements__delete');
+//добавить активный лайк, если карточка наша и мы ее лайкали
+    if( this._countLike.some((item)=>{return item._id === this._checkId})
+      ) {cardLike.classList.add('elements__like_act')}
+//добавить корзину, если карточка наша
+    if(this._ownerId  !== this._checkId )
+    {deleteButton.style.display = 'none'} else {
+      deleteButton.style.display = 'block'
+    }
+
 
     return this._element;
   }
+
+  _setEventListeners() {
+    this._element.querySelector('.elements__delete').addEventListener('click', () =>{
+      this._checkDelete()
+    });
+
+    this._element.querySelector('.elements__like').addEventListener('click', () => {
+      this._like(api)
+    });
+
+    this._element.querySelector('.elements__photo').addEventListener('click', () =>{
+      this._handleCardClick();
+    });
+  }
+
+  _checkDelete () {
+    openPopup(popupQuestionDelete);
+    cardIdDelete =  this._card_id;
+  }
+
+  _like(api){
+    if( cardLike.classList.contains('elements__like_act'))
+    {
+    api.disLike(this._element.dataset.cardId)
+    .then((res)=>{
+      cardCountLike.textContent = res.likes.length;
+      cardLike.classList.remove('elements__like_act');
+    })
+    .catch(err => {
+      showError(err)
+    })
+
+  } else {
+    api.plusLike(this._element.dataset.cardId)
+    .then((res)=>{
+      cardCountLike.textContent = res.likes.length;
+      cardLike.classList.add('elements__like_act');
+    })
+    .catch(err => {
+      showError(err)
+    })
+    }
+  }
+
 
   /*
   _dell() {
@@ -122,6 +179,7 @@ export class Card {
   }
 */
 }
+
 //объявить функию для добавления карточки
 
 //export const card = new Card(data, selector);

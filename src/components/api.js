@@ -1,16 +1,9 @@
 import { getResponse } from "../utils/utils.js";
 
-export const options = {
-  baseUrl: "https://nomoreparties.co/v1/plus-cohort-10",
-  headers: {
-    authorization: "ae17cf5f-30f7-49c5-80a6-f47193e26f36",
-    "Content-Type": "application/json",
-  },
-};
-
-export class Api {
+export default class Api {
   constructor(options) {
-    (this._baseUrl = options.baseUrl), (this._headers = options.headers);
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
   }
 
   //Загрузка информации о пользователе с сервера
