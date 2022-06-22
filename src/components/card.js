@@ -16,7 +16,10 @@ const popupPhoto = fullPhoto.querySelector(".popup__photo");
 const subtitlePhoto = fullPhoto.querySelector(".popup__subtitle");
 const buttonAdd = document.querySelector(".profile__add");
 //const cardTemplate = document.querySelector("#card-template").content;
-export let cardIdDelete = 0;
+export let cardIdDelete = {
+  cardId: "",
+  cardElement: "",
+};
 
 export const selector = ".elements__card";
 //добавить кнопкe Плюс_карточка функцию Открыть попап
@@ -44,7 +47,6 @@ export class Card {
   }
 
   _getElement() {
-    console.log("_getElement");
     const cardElement = document
       .querySelector(this._selector)
       .content.querySelector(".elements__card")
@@ -55,7 +57,6 @@ export class Card {
   //публичный метод, который возвращает полностью работоспособный
   //и наполненный данными элемент карточки
   generate() {
-    console.log("generate");
     // Запишем разметку в приватное поле _element
     this._element = this._getElement();
     //this._setEventListeners();
@@ -67,7 +68,6 @@ export class Card {
     cardPhoto.src = this._url;
     const cardCountLike = this._element.querySelector(".elements__count-like");
     cardCountLike.textContent = this._countLike.length;
-    console.log(this._element);
 
     const cardLike = this._element.querySelector(".elements__like");
     const deleteButton = this._element.querySelector(".elements__delete");
@@ -92,15 +92,13 @@ export class Card {
   _setEventListeners() {
     this._element
       .querySelector(".elements__delete")
-      .addEventListener("click", () => {
-        this._checkDelete();
+      .addEventListener("click", (evt) => {
+        this._checkDelete(evt);
       });
 
     this._element
       .querySelector(".elements__like")
       .addEventListener("click", (evt) => {
-        console.log("like");
-        console.log(evt.target);
         this._like(evt.target);
       });
 
@@ -111,25 +109,22 @@ export class Card {
       });
   }
 
-  _checkDelete() {
+  _checkDelete(evt) {
+    console.log("_checkDelete");
     openPopup(popupQuestionDelete);
-    cardIdDelete = this._card_id;
+    cardIdDelete.cardId = this._card_id; // id для удаления в api.js
+    cardIdDelete.cardElement = evt.target; // элемент для удаления с дом в index.js
   }
 
   _like(evt) {
-    console.log(evt.target);
-    console.log(this._element);
     if (
       this._element
         .querySelector(".elements__like")
         .classList.contains("elements__like_act")
     ) {
-      console.log("был лайк на карточке");
-      console.log(this._card_id);
       api
         .disLike(this._card_id)
         .then((res) => {
-          console.log(res);
           this._element.querySelector(".elements__count-like").textContent =
             res.likes.length;
           this._element
@@ -140,7 +135,6 @@ export class Card {
           showError(err);
         });
     } else {
-      console.log("нет лайка на карточке");
       api
         .plusLike(this._card_id)
         .then((res) => {

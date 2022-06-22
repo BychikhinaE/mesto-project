@@ -88,7 +88,6 @@ Promise.all([api.startLoad(), api.loadCards()])
             {
               data: item,
               handleCardClick: () => {
-                console.log(item.link, item.name);
                 const popupWithImade = new PopupWithImage(".popup_type_photo");
                 //НЕ РАБОТЫВАВЫЕТ (((((((
                 popupWithImade.open(item.link, item.name);
@@ -101,7 +100,6 @@ Promise.all([api.startLoad(), api.loadCards()])
           const cardElement = card.generate();
           // Добавляем в DOM
           cardsList.addItem(cardElement);
-          console.log("cardElement");
         },
       },
       ".elements"
@@ -185,12 +183,14 @@ formPlace.addEventListener("submit", function (evt) {
     //   buttonCreatePlace.disabled = true;
     // })
     .then((item) => {
+      // Создаём экземпляр карточки
       const card = new Card(
         {
           data: item,
           handleCardClick: () => {
             const popupWithImade = new PopupWithImage(".popup_type_photo");
-            popupWithImade.open(card._url, card._name);
+            //НЕ РАБОТЫВАВЫЕТ (((((((
+            popupWithImade.open(item.link, item.name);
           },
         },
         userId,
@@ -199,27 +199,25 @@ formPlace.addEventListener("submit", function (evt) {
       // Создаём карточку и возвращаем её наружу
       const cardElement = card.generate();
       // Добавляем в DOM
-      document.querySelector(".elements").append(cardElement);
-      closePopup(popupPlace);
-      formPlace.reset();
-      //buttonCreatePlace.classList.add('popup__button_disabled');
-      //buttonCreatePlace.disabled = true;
+      document.querySelector(".elements").prepend(cardElement);
     })
+
     .catch((err) => {
       showError(err);
     })
     .finally(() => {
       showSpinner(false);
+      closePopup(popupPlace);
     });
 });
-
 //Слушаем ответ на вопрос об удалении карточки
 buttonQuestionDelete.addEventListener("click", function (evt) {
   evt.preventDefault();
-  deleteCard(cardIdDelete)
+  api
+    .deleteCard(cardIdDelete.cardId)
     .then(() => {
       closePopup(popupQuestionDelete);
-      document.querySelector(`[data-card-id="${cardIdDelete}"]`).remove();
+      cardIdDelete.cardElement.closest(".elements__card").remove();
     })
     .catch((err) => {
       showError(err);
