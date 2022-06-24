@@ -31,26 +31,25 @@ import {
 
 import { enableValidation } from "./components/validate.js";
 import Api from "./components/api.js";
-import Section from './components/Section.js'
-import UserInfo from './components/userinfo.js';
-import PopupWithImage from './components/PopupWithImage.js';
+import Section from "./components/Section.js";
+import UserInfo from "./components/userinfo.js";
+import PopupWithImage from "./components/PopupWithImage.js";
 
 const nameInput = formProfile.elements.name;
 const jobInput = formProfile.elements.bio;
 
-
 console.log("Начало");
 const api = new Api({
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-10',
+  baseUrl: "https://nomoreparties.co/v1/plus-cohort-10",
   headers: {
-    authorization: 'ae17cf5f-30f7-49c5-80a6-f47193e26f36',
-    'Content-Type': 'application/json'
-  }
+    authorization: "ae17cf5f-30f7-49c5-80a6-f47193e26f36",
+    "Content-Type": "application/json",
+  },
 });
 
-let userId = null
+let userId = null;
 //Загрузить данные пользователя и карточки
-Promise.all([ api.startLoad(), api.loadCards() ])
+Promise.all([api.startLoad(), api.loadCards()])
   .then(([userData, cards]) => {
     console.log(userData);
     console.log(cards);
@@ -63,47 +62,53 @@ Promise.all([ api.startLoad(), api.loadCards() ])
     // //В атрибуте сохраняем id , с которым далее будем сравнить авторство карточек
     // profileName.dataset.myId = userData._id;
 
-    const user = new UserInfo({selectorName:'.profile__name', selectorBio:'.profile__bio', selectorAvatar:'.profile__avatar'})
-    user.getUserInfo(userData)
-    userId = user._id
+    const user = new UserInfo({
+      selectorName: ".profile__name",
+      selectorBio: ".profile__bio",
+      selectorAvatar: ".profile__avatar",
+    });
+    user.getUserInfo(userData);
+    userId = user._id;
     // и тут отрисовка карточек
-  //   cards.reverse().forEach((card) => {
-  //     const classaddCard = new Card(card, selector);
+    //   cards.reverse().forEach((card) => {
+    //     const classaddCard = new Card(card, selector);
 
-  //     const cardElement = classaddCard.generate();
+    //     const cardElement = classaddCard.generate();
 
-  //     cardsContainer.prepend(cardElement);
-  //     console.log("cardElement");
-  //   });
-  // })
-  const cardsList = new Section({
-    items: cards.reverse(),
-    renderer: (item)=>{
-    // Создаём экземпляр карточки
-    const card = new Card(
-      {data: item,
-      handleCardClick: () =>{
-      const popupWithImade = new PopupWithImage('.popup_type_photo');
-//НЕ РАБОТЫВАВЫЕТ (((((((
-      popupWithImade.open(card._url, card._name)
-      }
+    //     cardsContainer.prepend(cardElement);
+    //     console.log("cardElement");
+    //   });
+    // })
+    const cardsList = new Section(
+      {
+        items: cards.reverse(),
+        renderer: (item) => {
+          // Создаём экземпляр карточки
+          const card = new Card(
+            {
+              data: item,
+              handleCardClick: () => {
+                const popupWithImade = new PopupWithImage(".popup_type_photo");
+                //НЕ РАБОТЫВАВЫЕТ (((((((
+                popupWithImade.open(item.link, item.name);
+              },
+            },
+            userId,
+            "#card-template"
+          );
+          // Создаём карточку и возвращаем её наружу
+          const cardElement = card.generate();
+          // Добавляем в DOM
+          cardsList.addItem(cardElement);
+        },
       },
-      userId,
-      '#card-template');
-    // Создаём карточку и возвращаем её наружу
-    const cardElement = card.generate();
-     // Добавляем в DOM
-    cardsList.addItem(cardElement)
-    console.log("cardElement");
-  }},
-  '.elements')
-  cardsList.renderItems();
-
-})
+      ".elements"
+    );
+    cardsList.renderItems();
+  })
   .catch((err) => {
     showError(err);
-  })
-
+  });
 
 //Вызов валидации
 // enableValidation({
@@ -165,10 +170,11 @@ formPlace.addEventListener("submit", function (evt) {
   evt.preventDefault();
   showSpinner(true);
   const { namePlace, link } = evt.currentTarget.elements;
-  api.postNewCard({
-    name: namePlace.value,
-    link: link.value,
-  })
+  api
+    .postNewCard({
+      name: namePlace.value,
+      link: link.value,
+    })
     // .then((card) => {
     //   addCard(card.name, card.link, card.likes, card.owner._id, card._id);
     //   closePopup(popupPlace);
@@ -177,39 +183,41 @@ formPlace.addEventListener("submit", function (evt) {
     //   buttonCreatePlace.disabled = true;
     // })
     .then((item) => {
+      // Создаём экземпляр карточки
       const card = new Card(
-        {data: item,
-        handleCardClick: ()=>{
-        const popupWithImade = new PopupWithImage('.popup_type_photo');
-        popupWithImade.open(card._url, card._name)
-        }
+        {
+          data: item,
+          handleCardClick: () => {
+            const popupWithImade = new PopupWithImage(".popup_type_photo");
+            //НЕ РАБОТЫВАВЫЕТ (((((((
+            popupWithImade.open(item.link, item.name);
+          },
         },
         userId,
-        '#card-template');
-          // Создаём карточку и возвращаем её наружу
-          const cardElement = card.generate();
-           // Добавляем в DOM
-          document.querySelector('.elements').append(cardElement)
-      closePopup(popupPlace);
-      formPlace.reset();
-      //buttonCreatePlace.classList.add('popup__button_disabled');
-      //buttonCreatePlace.disabled = true;
+        "#card-template"
+      );
+      // Создаём карточку и возвращаем её наружу
+      const cardElement = card.generate();
+      // Добавляем в DOM
+      document.querySelector(".elements").prepend(cardElement);
     })
+
     .catch((err) => {
       showError(err);
     })
     .finally(() => {
       showSpinner(false);
+      closePopup(popupPlace);
     });
 });
-
 //Слушаем ответ на вопрос об удалении карточки
 buttonQuestionDelete.addEventListener("click", function (evt) {
   evt.preventDefault();
-  deleteCard(cardIdDelete)
+  api
+    .deleteCard(cardIdDelete.cardId)
     .then(() => {
       closePopup(popupQuestionDelete);
-      document.querySelector(`[data-card-id="${cardIdDelete}"]`).remove();
+      cardIdDelete.cardElement.closest(".elements__card").remove();
     })
     .catch((err) => {
       showError(err);
