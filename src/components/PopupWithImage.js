@@ -8,8 +8,9 @@ export default class PopupWithImage extends Popup {
   }
 
   open() {
-    super._element.querySelector(".popup__photo").src = this._url;
-    super._element.querySelector(".popup__subtitle").textContent = this._name;
+    this._element = super._getElement();
+    this._element.querySelector(".popup__photo").src = this._url;
+    this._element.querySelector(".popup__subtitle").textContent = this._name;
     super.open();
   }
 }

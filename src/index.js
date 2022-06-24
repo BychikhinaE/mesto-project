@@ -53,15 +53,8 @@ Promise.all([api.startLoad(), api.loadCards()])
   .then(([userData, cards]) => {
     console.log(userData);
     console.log(cards);
-    // тут установка данных пользователя
-    // profileName.textContent = userData.name;
-    // profileBio.textContent = userData.about;
-    // nameInput.value = userData.name;
-    // jobInput.value = userData.about;
-    // profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
-    // //В атрибуте сохраняем id , с которым далее будем сравнить авторство карточек
-    // profileName.dataset.myId = userData._id;
 
+    // тут установка данных пользователя
     const user = new UserInfo({
       selectorName: ".profile__name",
       selectorBio: ".profile__bio",
@@ -69,16 +62,8 @@ Promise.all([api.startLoad(), api.loadCards()])
     });
     user.getUserInfo(userData);
     userId = user._id;
+
     // и тут отрисовка карточек
-    //   cards.reverse().forEach((card) => {
-    //     const classaddCard = new Card(card, selector);
-
-    //     const cardElement = classaddCard.generate();
-
-    //     cardsContainer.prepend(cardElement);
-    //     console.log("cardElement");
-    //   });
-    // })
     const cardsList = new Section(
       {
         items: cards.reverse(),
@@ -88,9 +73,9 @@ Promise.all([api.startLoad(), api.loadCards()])
             {
               data: item,
               handleCardClick: () => {
-                const popupWithImade = new PopupWithImage(".popup_type_photo");
-                //НЕ РАБОТЫВАВЫЕТ (((((((
-                popupWithImade.open(item.link, item.name);
+                const popupWithImade = new PopupWithImage(".popup_type_photo", item.link, item.name);
+                popupWithImade.open()
+                popupWithImade.setEventListeners()
               },
             },
             userId,
@@ -188,9 +173,9 @@ formPlace.addEventListener("submit", function (evt) {
         {
           data: item,
           handleCardClick: () => {
-            const popupWithImade = new PopupWithImage(".popup_type_photo");
-            //НЕ РАБОТЫВАВЫЕТ (((((((
-            popupWithImade.open(item.link, item.name);
+            const popupWithImade = new PopupWithImage(".popup_type_photo", item.link, item.name);
+            popupWithImade.open()
+            popupWithImade.setEventListeners()
           },
         },
         userId,
