@@ -32,11 +32,11 @@ import {
 import { enableValidation } from "./components/validate.js";
 import Api from "./components/api.js";
 import Section from "./components/Section.js";
-import UserInfo from "./components/userinfo.js";
+import UserInfo from "./components/Userinfo.js";
 import PopupWithImage from "./components/PopupWithImage.js";
 
-const nameInput = formProfile.elements.name;
-const jobInput = formProfile.elements.bio;
+//const nameInput = formProfile.elements.name;
+//onst jobInput = formProfile.elements.bio;
 
 console.log("Начало");
 const api = new Api({
@@ -60,7 +60,9 @@ Promise.all([api.startLoad(), api.loadCards()])
       selectorBio: ".profile__bio",
       selectorAvatar: ".profile__avatar",
     });
+
     user.getUserInfo(userData);
+
     userId = user._id;
 
     // и тут отрисовка карточек
@@ -73,9 +75,13 @@ Promise.all([api.startLoad(), api.loadCards()])
             {
               data: item,
               handleCardClick: () => {
-                const popupWithImade = new PopupWithImage(".popup_type_photo", item.link, item.name);
-                popupWithImade.open()
-                popupWithImade.setEventListeners()
+                const popupWithImade = new PopupWithImage(
+                  ".popup_type_photo",
+                  item.link,
+                  item.name
+                );
+                popupWithImade.open();
+                popupWithImade.setEventListeners();
               },
             },
             userId,
@@ -110,10 +116,11 @@ formProfile.addEventListener("submit", function (evt) {
   evt.preventDefault();
   renderLoading(true, buttonSubmitProfile);
   const { name, bio } = evt.currentTarget.elements;
-  editProfile({
-    name: name.value,
-    about: bio.value,
-  })
+  api
+    .editProfile({
+      name: name.value,
+      about: bio.value,
+    })
     .then((res) => {
       profileName.textContent = res.name;
       profileBio.textContent = res.about;
@@ -173,9 +180,13 @@ formPlace.addEventListener("submit", function (evt) {
         {
           data: item,
           handleCardClick: () => {
-            const popupWithImade = new PopupWithImage(".popup_type_photo", item.link, item.name);
-            popupWithImade.open()
-            popupWithImade.setEventListeners()
+            const popupWithImade = new PopupWithImage(
+              ".popup_type_photo",
+              item.link,
+              item.name
+            );
+            popupWithImade.open();
+            popupWithImade.setEventListeners();
           },
         },
         userId,
