@@ -22,10 +22,10 @@ export default class UserInfo {
   }
   //публичный метод setUserInfo, который принимает новые данные пользователя,
   //отправляет их на сервер и добавляет их на страницу.
-  setUserInfo({name, bio}, api){
-    api.editProfile({
-      name: name.value,
-      about: bio.value
+  setUserInfo(name, bio, api){
+    return api.editProfile({
+      name: name,
+      about: bio,
     })
     .then((res)=>{
       document.querySelector(this._selectorName).textContent = res.name;
@@ -33,9 +33,9 @@ export default class UserInfo {
     })
   }
 
-  setUserAvatar({avatar}, api){
-    api.editAvatar({
-      avatar: avatar.value
+  setUserAvatar(url, api){
+    return api.editAvatar({
+      avatar: url,
     })
     .then((res)=>{
       document.querySelector(this._selectorAvatar).style.backgroundImage = `url(${res.avatar})`;
