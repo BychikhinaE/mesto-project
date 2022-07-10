@@ -66,21 +66,27 @@ avatarValidator.enableValidation();
 
 const placeValidator = new FormValidator(formConfig, "#formPlace");
 placeValidator.enableValidation();
+//
+//
+//
+const userInfo = new UserInfo({
+  selectorName: ".profile__name",
+  selectorBio: ".profile__bio",
+  selectorAvatar: ".profile__avatar",
+});
+//
+//
+//
 
 //Загрузить данные пользователя и карточки
-Promise.all([api.startLoad(), api.loadCards()])
+Promise.all([userInfo.getUserInfo(api), api.loadCards()])
   .then(([userData, cards]) => {
     console.log(userData);
     console.log(cards);
 
     // тут установка данных пользователя
-    user = new UserInfo({
-      selectorName: ".profile__name",
-      selectorBio: ".profile__bio",
-      selectorAvatar: ".profile__avatar",
-    });
-    user.getUserInfo(userData);
-    userId = user._id;
+    userInfo.renderUserInfo(userData);
+    userId = userData._id;
 
     // и тут отрисовка карточек
     const cardsList = new Section(
@@ -92,9 +98,13 @@ Promise.all([api.startLoad(), api.loadCards()])
             {
               data: item,
               handleCardClick: () => {
-                const popupWithImade = new PopupWithImage(".popup_type_photo", item.link, item.name);
-                popupWithImade.open()
-                popupWithImade.setEventListeners()
+                const popupWithImade = new PopupWithImage(
+                  ".popup_type_photo",
+                  item.link,
+                  item.name
+                );
+                popupWithImade.open();
+                popupWithImade.setEventListeners();
               },
             },
             userId,
@@ -179,7 +189,7 @@ const popupProfile = new PopupWithForm({
   handleFormSubmit: (obj) => {
     console.log(obj);
     renderLoading(true, buttonSubmitProfile);
-    user
+    userInfo
       .setUserInfo(obj.name, obj.bio, api)
       .then(() => {
         popupProfile.close();
@@ -193,8 +203,8 @@ const popupProfile = new PopupWithForm({
   },
 });
 buttonEdit.addEventListener("click", function () {
-  api
-    .startLoad()
+  userInfo
+    .getUserInfo(api)
     .then((userData) => {
       document.querySelector("#name").value = userData.name;
       document.querySelector("#bio").value = userData.about;
