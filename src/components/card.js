@@ -1,5 +1,5 @@
-import PopupDelete from "./PopupDelete.js";
-import {showError} from '../utils/utils.js'
+import { showError } from "../utils/utils.js";
+import { showQuestion } from "../index.js";
 
 export default class Card {
   constructor({ data, handleCardClick }, checkId, selector, api) {
@@ -56,221 +56,45 @@ export default class Card {
     return this._element;
   }
 
-  _setEventListeners=() =>{
+  _setEventListeners = () => {
     this._deleteButton.addEventListener("click", (evt) => {
-        this._checkDelete(evt);
-      });
+      this._checkDelete(evt);
+    });
 
     this._cardLike.addEventListener("click", () => {
-        this._like();
-      });
+      this._like();
+    });
 
     this._cardPhoto.addEventListener("click", () => {
-        this._handleCardClick();
-      });
-  }
+      this._handleCardClick();
+    });
+  };
 
   _checkDelete(evt) {
-    this._cardIdDelete = this._card_id; // id для удаления в api.js
-    //cardIdDelete.cardElement = evt.target; // элемент для удаления с дом в index.js
-    const popupDelete = new PopupDelete({
-      selector: ".popup_type_delete",
-      handleFormSubmit: () => {
-        console.log("да, удаляй!", this._cardIdDelete, evt.target);
-
-        this._api.deleteCard(this._cardIdDelete)
-          .then(() => {
-            popupDelete.close();
-            evt.target.closest(".elements__card").remove();
-          })
-          .catch((err) => {
-            showError(err)
-          });
-      },
-    });
-    popupDelete.setEventListeners();
-    popupDelete.open();
+    showQuestion(this._card_id, evt);
   }
 
   _like() {
-    if (
-      this._cardLike
-        .classList.contains("elements__like_act")
-    ) {
+    if (this._cardLike.classList.contains("elements__like_act")) {
       this._api
         .disLike(this._card_id)
         .then((res) => {
-          this._cardCountLike.textContent =
-            res.likes.length;
-          this._cardLike
-            .classList.remove("elements__like_act");
+          this._cardCountLike.textContent = res.likes.length;
+          this._cardLike.classList.remove("elements__like_act");
         })
         .catch((err) => {
           showError(err);
         });
     } else {
-      this._api.plusLike(this._card_id)
+      this._api
+        .plusLike(this._card_id)
         .then((res) => {
-          this._cardCountLike.textContent =
-            res.likes.length;
-          this._cardLike
-            .classList.add("elements__like_act");
+          this._cardCountLike.textContent = res.likes.length;
+          this._cardLike.classList.add("elements__like_act");
         })
         .catch((err) => {
           showError(err);
         });
     }
   }
-
-  /*
-  _dell() {
-    //Иконка удалить
-    if (cardElement.dataset.cardOwnerId !== profileName.dataset.myId) {
-      deleteButton.style.display = "none";
-    } else {
-      deleteButton.style.display = "block";
-      deleteButton.addEventListener("click", function () {
-        openPopup(popupQuestionDelete);
-        cardIdDelete = cardElement.dataset.cardId;
-      });
-    }
-  }
-  _like() {
-    //like
-    if (
-      countLike.some(function (item) {
-        return item._id === profileName.dataset.myId;
-      })
-    ) {
-      cardLike.classList.add("elements__like_act");
-    }
-
-    cardLike.addEventListener("click", function () {
-      if (cardLike.classList.contains("elements__like_act")) {
-        disLike(cardElement.dataset.cardId)
-          .then((res) => {
-            cardCountLike.textContent = res.likes.length;
-            cardLike.classList.remove("elements__like_act");
-          })
-          .catch((err) => {
-            showError(err);
-          });
-      } else {
-        plusLike(cardElement.dataset.cardId)
-          .then((res) => {
-            cardCountLike.textContent = res.likes.length;
-            cardLike.classList.add("elements__like_act");
-          })
-          .catch((err) => {
-            showError(err);
-          });
-      }
-    });
-  }
-  _openFoto() {
-    this._element
-      .querySelector(".elements__photo")
-      .addEventListener("click", function () {
-        popupPhoto.src = urlValue;
-        popupPhoto.alt = nameValue;
-        subtitlePhoto.textContent = nameValue;
-        openPopup(fullPhoto);
-      });
-  }
-*/
 }
-
-//объявить функию для добавления карточки
-
-//export const card = new Card(data, selector);
-/*
-export function addCard(data) {
-  console.log("addCard");
-  cardsContainer.prepend(Card(data, selector));
-}
-*/
-/*
-const cardCountLike = cardElement.querySelector(".elements__count-like");
-const cardLike = cardElement.querySelector(".elements__like");
-const cardPhoto = cardElement.querySelector(".elements__photo");
-const deleteButton = cardElement.querySelector(".elements__delete");
-
-// cardElement.querySelector(".elements__title").textContent = nameValue;
-//cardPhoto.alt = nameValue;
-//cardPhoto.src = urlValue;
-//cardCountLike.textContent = countLike.length;
-//cardElement.dataset.cardOwnerId = ownerId;
-//cardElement.dataset.cardId = card_id;
-*/
-
-// function createCard(nameValue, urlValue, countLike, ownerId, card_id) {
-//   const cardElement = document.querySelector(templateSelector).content.querySelector('.elements__card').cloneNode(true);
-
-//   const cardCountLike = cardElement.querySelector('.elements__count-like');
-//   const cardLike = cardElement.querySelector('.elements__like');
-//   const cardPhoto = cardElement.querySelector('.elements__photo');
-//   const deleteButton = cardElement.querySelector('.elements__delete');
-
-//   cardElement.querySelector('.elements__title').textContent = nameValue;
-//   cardPhoto.alt = nameValue;
-//   cardPhoto.src = urlValue;
-//   cardCountLike.textContent = countLike.length;
-//   cardElement.dataset.cardOwnerId =  ownerId;
-//   cardElement.dataset.cardId = card_id;
-
-//   if(cardElement.dataset.cardOwnerId  !== profileName.dataset.myId )
-//   {deleteButton.style.display = 'none'} else{
-//     deleteButton.style.display = 'block';
-//     deleteButton.addEventListener('click', function () {
-//       openPopup(popupQuestionDelete);
-//       cardIdDelete =  cardElement.dataset.cardId;
-//     });
-//   }
-
-//   if( countLike.some(function(item){
-//       return item._id === profileName.dataset.myId})
-//     )
-//   {cardLike.classList.add('elements__like_act')}
-
-//   cardLike.addEventListener('click', function () {
-//     if( cardLike.classList.contains('elements__like_act'))
-//       {
-//       disLike(cardElement.dataset.cardId)
-//       .then((res)=>{
-//         cardCountLike.textContent = res.likes.length;
-//         cardLike.classList.remove('elements__like_act');
-//       })
-//       .catch(err => {
-//         showError(err)
-//       })
-
-//     } else {
-//       plusLike(cardElement.dataset.cardId)
-//       .then((res)=>{
-//         cardCountLike.textContent = res.likes.length;
-//         cardLike.classList.add('elements__like_act');
-//       })
-//       .catch(err => {
-//         showError(err)
-//       })
-//      }
-//   });
-
-//   cardPhoto.addEventListener('click', function () {
-//     popupPhoto.src = urlValue;
-//     popupPhoto.alt = nameValue;
-//     subtitlePhoto.textContent = nameValue;
-//     openPopup(fullPhoto);
-//     });
-
-//   return cardElement;
-// };
-
-//объявить функию для добавления карточки
-/*
-export function addCard(nameValue, urlValue, countLike, ownerId, card_id) {
-  cardsContainer.prepend(
-    createCard(nameValue, urlValue, countLike, ownerId, card_id)
-  );
-}
-*/

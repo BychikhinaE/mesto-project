@@ -9,14 +9,11 @@ export default class Section {
   }
   //Публичный метод, который отвечает за отрисовку всех элементов.
   renderItems() {
-    console.log("renderItems");
     this._initialArray.forEach((item) => this._renderer(item));
   }
 
   //Публичный метод addItem принимает DOM-элемент и добавляет его в контейнер.
   addItem(element) {
-    console.log("addItem");
-
     this._container.prepend(element);
   }
 }
