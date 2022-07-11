@@ -7,8 +7,6 @@ export default class UserInfo {
     this._selectorName = selectorName;
     this._selectorBio = selectorBio;
     this._selectorAvatar = selectorAvatar;
-    this._id = null;
-    this._userData = null;
   }
 
   setUserInfo(userData) {
@@ -21,7 +19,6 @@ export default class UserInfo {
     document.querySelector(
       this._selectorAvatar
     ).style.backgroundImage = `url(${this._userData.avatar})`;
-    this._id = this._userData._id;
   }
 
   getUserInfo() {

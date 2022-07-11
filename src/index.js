@@ -24,9 +24,8 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
-//Переменная userId для проверки принадлежности карточки владельцу страницы (кнопки лайк и  удалить)
+//Сюда запишем экземпляр класса UserInfo
 let user;
-let userId = null;
 
 //Объект с настройками для валидации, это первый параметр класса FormValidator
 const formConfig = {
@@ -56,7 +55,6 @@ Promise.all([api.startLoad(), api.loadCards()])
       selectorAvatar: ".profile__avatar",
     });
     user.setUserInfo(userData);
-    userId = user._id;
 
     // и тут отрисовка карточек
     const cardsList = new Section(
@@ -78,7 +76,7 @@ Promise.all([api.startLoad(), api.loadCards()])
                 popupWithImade.setEventListeners();
               },
             },
-            userId,
+            user.getUserInfo()._id,
             "#card-template",
             api
           );
@@ -120,7 +118,7 @@ const popupPlace = new PopupWithForm({
               popupWithImade.setEventListeners();
             },
           },
-          userId,
+          user.getUserInfo()._id,
           "#card-template",
           api
         );
