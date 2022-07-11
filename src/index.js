@@ -1,21 +1,11 @@
 import "./pages/index.css";
-
-import { showError, showSpinner, renderLoading } from "./utils/utils.js";
-
-// import {
-//   showSpinner,
-//   popupProfile,
-//   formProfile,
-//   popupAvatar,
-//   profileName,
-//   profileBio,
-//   formAvatar,
-//   profileAvatar,
-//   buttonSubmitProfile,
-//   buttonSubmitAvatar,
-//   showError,
-// } from "./components/modal.js";
-
+import Api from "./components/api.js";
+import Section from "./components/Section.js";
+import PopupWithForm from "./components/PopupWithForm.js";
+import PopupWithImage from "./components/PopupWithImage.js";
+import UserInfo from "./components/Userinfo.js";
+import Card from "./components/card.js";
+import PopupDelete from "./components/PopupDelete.js";
 import {
   buttonAdd,
   buttonSubmitAvatar,
@@ -24,18 +14,9 @@ import {
   buttonEdit,
 } from "./utils/constants.js";
 
-//import { enableValidation } from "./components/validate.js";
-import Api from "./components/api.js";
-import Section from "./components/Section.js";
-import UserInfo from "./components/userinfo.js";
-import PopupWithImage from "./components/PopupWithImage.js";
-import PopupWithForm from "./components/PopupWithForm.js";
-import Card from "./components/card.js";
+import { renderLoading, showError, showSpinner } from "./utils/utils";
 import FormValidator from "./components/FormValidator.js";
-// const nameInput = formProfile.elements.name;
-// const jobInput = formProfile.elements.bio;
 
-console.log("Начало");
 const api = new Api({
   baseUrl: "https://nomoreparties.co/v1/plus-cohort-10",
   headers: {
@@ -43,7 +24,6 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
-
 //Переменная userId для проверки принадлежности карточки владельцу страницы (кнопки лайк и  удалить)
 let user;
 let userId = null;
@@ -66,27 +46,17 @@ avatarValidator.enableValidation();
 
 const placeValidator = new FormValidator(formConfig, "#formPlace");
 placeValidator.enableValidation();
-//
-//
-//
-const userInfo = new UserInfo({
-  selectorName: ".profile__name",
-  selectorBio: ".profile__bio",
-  selectorAvatar: ".profile__avatar",
-});
-//
-//
-//
 
 //Загрузить данные пользователя и карточки
-Promise.all([userInfo.getUserInfo(api), api.loadCards()])
+Promise.all([api.startLoad(), api.loadCards()])
   .then(([userData, cards]) => {
-    console.log(userData);
-    console.log(cards);
-
-    // тут установка данных пользователя
-    userInfo.renderUserInfo(userData);
-    userId = userData._id;
+    user = new UserInfo({
+      selectorName: ".profile__name",
+      selectorBio: ".profile__bio",
+      selectorAvatar: ".profile__avatar",
+    });
+    user.setUserInfo(userData);
+    userId = user._id;
 
     // и тут отрисовка карточек
     const cardsList = new Section(
@@ -103,6 +73,7 @@ Promise.all([userInfo.getUserInfo(api), api.loadCards()])
                   item.link,
                   item.name
                 );
+
                 popupWithImade.open();
                 popupWithImade.setEventListeners();
               },
@@ -125,105 +96,10 @@ Promise.all([userInfo.getUserInfo(api), api.loadCards()])
     showError(err);
   });
 
-//Вызов валидации
-// enableValidation({
-//  // formSelector: ".popup__form",
-//   inputSelector: ".popup__input",
-//   submitButtonSelector: ".popup__button",
-//   inactiveButtonClass: "popup__button_disabled",
-//   inputErrorClass: "popup__input_type_error",
-//   errorClass: "popup__error_visible",
-// });
-
-//Добавляем отслеживание отправки формы с информацией в профиле
-// formProfile.addEventListener("submit", function (evt) {
-//   evt.preventDefault();
-//   renderLoading(true, buttonSubmitProfile);
-//   const { name, bio } = evt.currentTarget.elements;
-//   editProfile({
-//     name: name.value,
-//     about: bio.value,
-//   })
-//     .then((res) => {
-//       profileName.textContent = res.name;
-//       profileBio.textContent = res.about;
-//       closePopup(popupProfile);
-//     })
-//     .catch((err) => {
-//       showError(err);
-//     })
-//     .finally(() => {
-//       renderLoading(false, buttonSubmitProfile);
-//     });
-// });
-
-//Добавляем отслеживание отправки формы с изменением ФОТО в профиле
-const popupAvatar = new PopupWithForm({
-  selector: ".popup_type_avatar",
-  handleFormSubmit: (obj) => {
-    console.log(obj, obj.avatar);
-    renderLoading(true, buttonSubmitAvatar);
-    user
-      .setUserAvatar(obj.avatar, api)
-      .then(() => {
-        popupAvatar.close();
-        avatarValidator.toggleButtonState();
-      })
-      .catch((err) => {
-        showError(err);
-      })
-      .finally(() => {
-        renderLoading(false, buttonSubmitAvatar);
-      });
-  },
-});
-popupAvatar.setEventListeners();
-buttonAvatar.addEventListener("click", function () {
-  console.log("clickAvatar");
-  popupAvatar.open();
-});
-
-//Добавляем отслеживание отправки формы с изменением ИНФЫ в профиле
-const popupProfile = new PopupWithForm({
-  selector: ".popup_type_profile",
-  handleFormSubmit: (obj) => {
-    console.log(obj);
-    renderLoading(true, buttonSubmitProfile);
-    userInfo
-      .setUserInfo(obj.name, obj.bio, api)
-      .then(() => {
-        popupProfile.close();
-      })
-      .catch((err) => {
-        showError(err);
-      })
-      .finally(() => {
-        renderLoading(false, buttonSubmitProfile);
-      });
-  },
-});
-buttonEdit.addEventListener("click", function () {
-  userInfo
-    .getUserInfo(api)
-    .then((userData) => {
-      document.querySelector("#name").value = userData.name;
-      document.querySelector("#bio").value = userData.about;
-    })
-    .then(() => {
-      profileValidator.toggleButtonState();
-      popupProfile.setEventListeners();
-      popupProfile.open();
-    })
-    .catch((err) => {
-      showError(err);
-    });
-});
-
 //Добавляем новую карточку из формы
 const popupPlace = new PopupWithForm({
   selector: ".popup_type_place",
   handleFormSubmit: (obj) => {
-    console.log(obj, obj.namePlace, obj.link);
     showSpinner(true);
     api
       .postNewCard({
@@ -265,20 +141,87 @@ const popupPlace = new PopupWithForm({
 });
 popupPlace.setEventListeners();
 buttonAdd.addEventListener("click", function () {
-  console.log("click");
   popupPlace.open();
 });
 
-//Слушаем ответ на вопрос об удалении карточки
-// buttonQuestionDelete.addEventListener("click", function (evt) {
-//   evt.preventDefault();
-//   api
-//     .deleteCard(cardIdDelete.cardId)
-//     .then(() => {
-//       closePopup(popupQuestionDelete);
-//       cardIdDelete.cardElement.closest(".elements__card").remove();
-//     })
-//     .catch((err) => {
-//       showError(err);
-//     });
-// });
+//Добавляем отслеживание отправки формы с изменением фото в профиле
+const popupAvatar = new PopupWithForm({
+  selector: ".popup_type_avatar",
+  handleFormSubmit: (obj) => {
+    renderLoading(true, buttonSubmitAvatar);
+    api
+      .editAvatar({
+        avatar: obj.avatar,
+      })
+      .then((res) => {
+        //user.setUserAvatar(res)
+        user.setUserInfo(res);
+      })
+      .then(() => {
+        popupAvatar.close();
+        avatarValidator.toggleButtonState();
+      })
+      .catch((err) => {
+        showError(err);
+      })
+      .finally(() => {
+        renderLoading(false, buttonSubmitAvatar);
+      });
+  },
+});
+popupAvatar.setEventListeners();
+buttonAvatar.addEventListener("click", function () {
+  popupAvatar.open();
+});
+
+//Добавляем отслеживание отправки формы с изменением в профиле
+const popupProfile = new PopupWithForm({
+  selector: ".popup_type_profile",
+  handleFormSubmit: (obj) => {
+    renderLoading(true, buttonSubmitProfile);
+    api
+      .editProfile({
+        name: obj.name,
+        about: obj.bio,
+      })
+      .then((res) => {
+        user.setUserInfo(res);
+      })
+      .then(() => {
+        popupProfile.close();
+      })
+      .catch((err) => {
+        showError(err);
+      })
+      .finally(() => {
+        renderLoading(false, buttonSubmitProfile);
+      });
+  },
+});
+buttonEdit.addEventListener("click", function () {
+  const userData = user.getUserInfo();
+  document.querySelector("#name").value = userData.name;
+  document.querySelector("#bio").value = userData.about;
+  profileValidator.toggleButtonState();
+  popupProfile.setEventListeners();
+  popupProfile.open();
+});
+
+export function showQuestion(id, evt) {
+  const popupDelete = new PopupDelete({
+    selector: ".popup_type_delete",
+    handleFormSubmit: () => {
+      api
+        .deleteCard(id)
+        .then(() => {
+          popupDelete.close();
+          evt.target.closest(".elements__card").remove();
+        })
+        .catch((err) => {
+          showError(err);
+        });
+    },
+  });
+  popupDelete.setEventListeners();
+  popupDelete.open();
+}

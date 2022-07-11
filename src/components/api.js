@@ -2,13 +2,11 @@ import { getResponse } from "../utils/utils.js";
 
 export default class Api {
   constructor(options) {
-    this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+    (this._baseUrl = options.baseUrl), (this._headers = options.headers);
   }
 
   //Загрузка информации о пользователе с сервера
   startLoad = () => {
-    console.log("startLoad");
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
     }).then(getResponse);
@@ -16,7 +14,6 @@ export default class Api {
 
   //Загрузка карточек с сервера
   loadCards = () => {
-    console.log("loadCards");
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     }).then(getResponse);
