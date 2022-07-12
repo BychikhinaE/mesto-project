@@ -2,18 +2,17 @@
 export default class Popup {
   constructor(selector){
   this._selector = selector;
+  this._element = document.querySelector(this._selector);
+  this._buttonClose = this._element.querySelector('.popup__close');
   }
-  _getElement (){
-    this._element = document.querySelector(this._selector);
-    return  this._element
-  }
+
   //публичные методы open и close, которые отвечают за открытие и закрытие попапа
-  open(){
+  open() {
     this._element.classList.add('popup_opened');
     this._element.addEventListener('click', this._closeClickBlack);
     document.addEventListener('keydown', this._handleEscClose)
   }
-  close(){
+  close() {
     this._element.classList.remove('popup_opened');
     this._element.removeEventListener('click', this._closeClickBlack);
     document.removeEventListener('keydown', this._handleEscClose)
@@ -35,8 +34,14 @@ export default class Popup {
   }
   //публичный метод setEventListeners  добавляет слушатель клика иконке закрытия попапа.
   setEventListeners (){
-    this._element.querySelector('.popup__close').addEventListener('click', ()=>{
+    this._buttonClose.addEventListener('click', ()=>{
       this.close();
     })
   }
+
+  // _getElement() {
+  //   //this.setEventListeners()
+  //   return  this._element
+  // }
+
 }

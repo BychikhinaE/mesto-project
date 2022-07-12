@@ -7,21 +7,23 @@ export default class UserInfo {
     this._selectorName = selectorName;
     this._selectorBio = selectorBio;
     this._selectorAvatar = selectorAvatar;
+    this.fieldName = document.querySelector(this._selectorName);
+    this.fieldBio = document.querySelector(this._selectorBio);
+    this.fieldAvatar = document.querySelector(this._selectorAvatar);
   }
 
   setUserInfo(userData) {
     this._userData = userData;
-    document.querySelector(this._selectorName).textContent =
-      this._userData.name;
-    document.querySelector(this._selectorBio).textContent =
-      this._userData.about;
-
-    document.querySelector(
-      this._selectorAvatar
-    ).style.backgroundImage = `url(${this._userData.avatar})`;
+    this.fieldName.textContent = this._userData.name;
+    this.fieldBio.textContent = this._userData.about;
+    this.fieldAvatar.style.backgroundImage = `url(${this._userData.avatar})`;
   }
 
   getUserInfo() {
     return this._userData;
+  }
+
+  getUserId() {
+    return this._userData._id;
   }
 }

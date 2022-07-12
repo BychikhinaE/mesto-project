@@ -1,8 +1,5 @@
-import { showError } from "../utils/utils.js";
-import { showQuestion } from "../index.js";
-
 export default class Card {
-  constructor({ data, handleCardClick }, checkId, selector, api) {
+  constructor({ data, handleCardClick, functionLike, functionDelete }, checkId, selector) {
     this._name = data.name;
     this._url = data.link;
     this._countLike = data.likes;
@@ -11,8 +8,9 @@ export default class Card {
     this._selector = selector;
     this._handleCardClick = handleCardClick;
     this._checkId = checkId;
-    this._api = api;
-  }
+    this._like = functionLike;
+    this._checkDelete = functionDelete;
+   }
 
   _getElement() {
     const cardElement = document
@@ -65,36 +63,21 @@ export default class Card {
       this._like();
     });
 
-    this._cardPhoto.addEventListener("click", () => {
-      this._handleCardClick();
+    this._cardPhoto.addEventListener("click", (evt) => {
+      this._handleCardClick(evt);
+
     });
   };
 
-  _checkDelete(evt) {
-    showQuestion(this._card_id, evt);
+//получает с сервера кол-во лайков у карточки и передает в соответствующее поле DOM-элемента
+//также меняет цвет-статус иконки лайка
+  changeCountLike(res){
+    this._cardCountLike.textContent = res.likes.length;
+    this._cardLike.classList.toggle("elements__like_act");
   }
 
-  _like() {
-    if (this._cardLike.classList.contains("elements__like_act")) {
-      this._api
-        .disLike(this._card_id)
-        .then((res) => {
-          this._cardCountLike.textContent = res.likes.length;
-          this._cardLike.classList.remove("elements__like_act");
-        })
-        .catch((err) => {
-          showError(err);
-        });
-    } else {
-      this._api
-        .plusLike(this._card_id)
-        .then((res) => {
-          this._cardCountLike.textContent = res.likes.length;
-          this._cardLike.classList.add("elements__like_act");
-        })
-        .catch((err) => {
-          showError(err);
-        });
-    }
+  deleteCardDOM(evt){
+    evt.target.closest(".elements__card").remove();
   }
+
 }

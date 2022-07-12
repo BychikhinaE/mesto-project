@@ -12,10 +12,13 @@ import {
   buttonAvatar,
   buttonSubmitProfile,
   buttonEdit,
+  userNameInput,
+  userBioInput,
 } from "./utils/constants.js";
 
 import { renderLoading, showError, showSpinner } from "./utils/utils";
 import FormValidator from "./components/FormValidator.js";
+import { formConfig } from "./utils/formConfig.js";
 
 const api = new Api({
   baseUrl: "https://nomoreparties.co/v1/plus-cohort-10",
@@ -24,17 +27,9 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
-//Сюда запишем экземпляр класса UserInfo
+//Сюда запишем экземпляр класса UserInfo и Section соответственно
 let user;
-
-//Объект с настройками для валидации, это первый параметр класса FormValidator
-const formConfig = {
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-};
+let cardsList;
 
 //Вызов валидации
 const profileValidator = new FormValidator(formConfig, "#formProfile");
@@ -46,7 +41,82 @@ avatarValidator.enableValidation();
 const placeValidator = new FormValidator(formConfig, "#formPlace");
 placeValidator.enableValidation();
 
-//Загрузить данные пользователя и карточки
+//Экземпляр модального с полноразмерным фото, его метод передадим в колбэк экземпляра Card
+const popupWithImade = new PopupWithImage(".popup_type_photo");
+//добавляем слушатель клика иконке закрытия попапа с фоткой один раз и на всю жизнь
+popupWithImade.setEventListeners();
+
+//НЕкоторый функционал
+//Колбэк клика по кнопке лайк для экземпляра Card
+function toggleLike(card) {
+  if (card._cardLike.classList.contains("elements__like_act")) {
+    api
+      .disLike(card._card_id)
+      .then((res) => {
+        card.changeCountLike(res);
+      })
+      .catch((err) => {
+        showError(err);
+      });
+  } else {
+    api
+      .plusLike(card._card_id)
+      .then((res) => {
+        card.changeCountLike(res);
+      })
+      .catch((err) => {
+        showError(err);
+      });
+  }
+}
+
+//Экземпляр модального с вопросом-подтверждением УДОЛИТЬ?
+const popupDelete = new PopupDelete({
+  selector: ".popup_type_delete",
+  handleFormSubmit: (card, evt) => {
+    api
+      .deleteCard(card._card_id)
+      .then(() => {
+        popupDelete.close();
+        card.deleteCardDOM(evt);
+      })
+      .catch((err) => {
+        showError(err);
+      });
+  },
+});
+
+//Колбэк для экземпляра Card, кликнишь и позовется дальше внутриутробный handleFormSubmit
+function showQuestion(card, evt) {
+  popupDelete.setEventListeners(card, evt);
+  popupDelete.open();
+}
+
+// Функция создания экземпляра карточки
+function createCard(item) {
+  // Создаём экземпляр карточки
+  return new Card(
+    {
+      data: item,
+
+      handleCardClick: (evt) => {
+        popupWithImade.open(evt.target);
+      },
+
+      functionLike: () => {
+        toggleLike(card);
+      },
+
+      functionDelete: (evt) => {
+        showQuestion(card, evt);
+      },
+    },
+    user.getUserId(),
+    "#card-template"
+  )
+}
+
+//Загрузить данные пользователя и карточки, создаем экземпляры user = new UserInfo и cardsList = new Section
 Promise.all([api.startLoad(), api.loadCards()])
   .then(([userData, cards]) => {
     user = new UserInfo({
@@ -57,29 +127,11 @@ Promise.all([api.startLoad(), api.loadCards()])
     user.setUserInfo(userData);
 
     // и тут отрисовка карточек
-    const cardsList = new Section(
+    cardsList = new Section(
       {
         items: cards.reverse(),
         renderer: (item) => {
-          // Создаём экземпляр карточки
-          const card = new Card(
-            {
-              data: item,
-              handleCardClick: () => {
-                const popupWithImade = new PopupWithImage(
-                  ".popup_type_photo",
-                  item.link,
-                  item.name
-                );
-
-                popupWithImade.open();
-                popupWithImade.setEventListeners();
-              },
-            },
-            user.getUserInfo()._id,
-            "#card-template",
-            api
-          );
+          const card = createCard(item)
           // Создаём карточку и возвращаем её наружу
           const cardElement = card.generate();
           // Добавляем в DOM
@@ -105,27 +157,12 @@ const popupPlace = new PopupWithForm({
         link: obj.link,
       })
       .then((item) => {
-        const card = new Card(
-          {
-            data: item,
-            handleCardClick: () => {
-              const popupWithImade = new PopupWithImage(
-                ".popup_type_photo",
-                item.link,
-                item.name
-              );
-              popupWithImade.open();
-              popupWithImade.setEventListeners();
-            },
-          },
-          user.getUserInfo()._id,
-          "#card-template",
-          api
-        );
-        // Создаём карточку и возвращаем её наружу
+        const card = createCard(item)
+          // Создаём карточку и возвращаем её наружу
         const cardElement = card.generate();
-        // Добавляем в DOM
-        document.querySelector(".elements").prepend(cardElement);
+          // Добавляем в DOM
+        cardsList.addItem(cardElement);
+
         popupPlace.close();
         placeValidator.toggleButtonState();
       })
@@ -198,28 +235,9 @@ const popupProfile = new PopupWithForm({
 });
 buttonEdit.addEventListener("click", function () {
   const userData = user.getUserInfo();
-  document.querySelector("#name").value = userData.name;
-  document.querySelector("#bio").value = userData.about;
+  userNameInput.value = userData.name;
+  userBioInput.value = userData.about;
   profileValidator.toggleButtonState();
   popupProfile.setEventListeners();
   popupProfile.open();
 });
-
-export function showQuestion(id, evt) {
-  const popupDelete = new PopupDelete({
-    selector: ".popup_type_delete",
-    handleFormSubmit: () => {
-      api
-        .deleteCard(id)
-        .then(() => {
-          popupDelete.close();
-          evt.target.closest(".elements__card").remove();
-        })
-        .catch((err) => {
-          showError(err);
-        });
-    },
-  });
-  popupDelete.setEventListeners();
-  popupDelete.open();
-}

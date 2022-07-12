@@ -30,9 +30,10 @@ export function showSpinner(isLoading) {
   }
 }
 
+const popupError = new PopupError(".popup_type_error");
+popupError.setEventListeners();
+
 //Функция для вывода ошибки на экран
 export function showError(err) {
-  const popupError = new PopupError(".popup_type_error", err);
-  popupError.open();
-  popupError.setEventListeners();
+  popupError.open(err);
 }
