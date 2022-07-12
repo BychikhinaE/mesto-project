@@ -48,21 +48,31 @@ popupWithImade.setEventListeners();
 
 //НЕкоторый функционал
 //Колбэк клика по кнопке лайк для экземпляра Card
-function toggleLike(card) {
-  if (card._cardLike.classList.contains("elements__like_act")) {
+function toggleLike(cardEl, evt) {
+  if (evt.target.classList.contains("elements__like_act")) {
     api
-      .disLike(card._card_id)
+      .disLike(cardEl._id)
       .then((res) => {
-        card.changeCountLike(res);
+        evt.target
+          .closest(".elements__card")
+          .querySelector(".elements__count-like").textContent =
+          res.likes.length;
+        evt.target.classList.toggle("elements__like_act");
+        //  card.changeCountLike(res);
       })
       .catch((err) => {
         showError(err);
       });
   } else {
     api
-      .plusLike(card._card_id)
+      .plusLike(cardEl._id)
       .then((res) => {
-        card.changeCountLike(res);
+        evt.target
+          .closest(".elements__card")
+          .querySelector(".elements__count-like").textContent =
+          res.likes.length;
+        evt.target.classList.toggle("elements__like_act");
+        //  card.changeCountLike(res);
       })
       .catch((err) => {
         showError(err);
@@ -75,10 +85,11 @@ const popupDelete = new PopupDelete({
   selector: ".popup_type_delete",
   handleFormSubmit: (card, evt) => {
     api
-      .deleteCard(card._card_id)
+      .deleteCard(card._id)
       .then(() => {
         popupDelete.close();
-        card.deleteCardDOM(evt);
+        evt.target.closest(".elements__card").remove();
+        //card.deleteCardDOM(evt);
       })
       .catch((err) => {
         showError(err);
@@ -103,17 +114,17 @@ function createCard(item) {
         popupWithImade.open(evt.target);
       },
 
-      functionLike: () => {
-        toggleLike(card);
+      functionLike: (evt) => {
+        toggleLike(item, evt);
       },
 
       functionDelete: (evt) => {
-        showQuestion(card, evt);
+        showQuestion(item, evt);
       },
     },
     user.getUserId(),
     "#card-template"
-  )
+  );
 }
 
 //Загрузить данные пользователя и карточки, создаем экземпляры user = new UserInfo и cardsList = new Section
@@ -131,7 +142,7 @@ Promise.all([api.startLoad(), api.loadCards()])
       {
         items: cards.reverse(),
         renderer: (item) => {
-          const card = createCard(item)
+          const card = createCard(item);
           // Создаём карточку и возвращаем её наружу
           const cardElement = card.generate();
           // Добавляем в DOM
@@ -157,10 +168,10 @@ const popupPlace = new PopupWithForm({
         link: obj.link,
       })
       .then((item) => {
-        const card = createCard(item)
-          // Создаём карточку и возвращаем её наружу
+        const card = createCard(item);
+        // Создаём карточку и возвращаем её наружу
         const cardElement = card.generate();
-          // Добавляем в DOM
+        // Добавляем в DOM
         cardsList.addItem(cardElement);
 
         popupPlace.close();

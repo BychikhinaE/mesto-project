@@ -1,5 +1,9 @@
 export default class Card {
-  constructor({ data, handleCardClick, functionLike, functionDelete }, checkId, selector) {
+  constructor(
+    { data, handleCardClick, functionLike, functionDelete },
+    checkId,
+    selector
+  ) {
     this._name = data.name;
     this._url = data.link;
     this._countLike = data.likes;
@@ -10,7 +14,7 @@ export default class Card {
     this._checkId = checkId;
     this._like = functionLike;
     this._checkDelete = functionDelete;
-   }
+  }
 
   _getElement() {
     const cardElement = document
@@ -59,25 +63,38 @@ export default class Card {
       this._checkDelete(evt);
     });
 
-    this._cardLike.addEventListener("click", () => {
-      this._like();
+    this._cardLike.addEventListener("click", (evt) => {
+      this._like(evt);
     });
 
     this._cardPhoto.addEventListener("click", (evt) => {
       this._handleCardClick(evt);
-
     });
   };
 
-//получает с сервера кол-во лайков у карточки и передает в соответствующее поле DOM-элемента
-//также меняет цвет-статус иконки лайка
-  changeCountLike(res){
+  //получает с сервера кол-во лайков у карточки и передает в соответствующее поле DOM-элемента
+  //также меняет цвет-статус иконки лайка
+  /*
+
+
+
+Функционал перенес в toggleLike
+
+
+  changeCountLike(res) {
+
     this._cardCountLike.textContent = res.likes.length;
     this._cardLike.classList.toggle("elements__like_act");
   }
+  */
 
-  deleteCardDOM(evt){
+  // Функционал перенес в popupDelete (showQuestion)
+  /*
+
+
+ deleteCardDOM(evt) {
     evt.target.closest(".elements__card").remove();
   }
 
+  */
 }
