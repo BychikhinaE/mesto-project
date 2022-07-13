@@ -80,7 +80,7 @@ function toggleLike(cardEl, evt) {
   }
 }
 
-//Экземпляр модального с вопросом-подтверждением УДОЛИТЬ?
+//Экземпляр модального с вопросом-подтверждением удаления?
 const popupDelete = new PopupDelete({
   selector: ".popup_type_delete",
   handleFormSubmit: (card, evt) => {
@@ -97,7 +97,7 @@ const popupDelete = new PopupDelete({
   },
 });
 
-//Колбэк для экземпляра Card, кликнишь и позовется дальше внутриутробный handleFormSubmit
+//Колбэк для экземпляра Card, кликнишь и позовется дальше  handleFormSubmit с 76 строчки
 function showQuestion(card, evt) {
   popupDelete.setEventListeners(card, evt);
   popupDelete.open();
@@ -114,12 +114,12 @@ function createCard(item) {
         popupWithImade.open(evt.target);
       },
 
-      functionLike: (evt) => {
-        toggleLike(item, evt);
+      functionLike: function () {
+        toggleLike(this);
       },
 
-      functionDelete: (evt) => {
-        showQuestion(item, evt);
+      functionDelete: function (evt) {
+        showQuestion(this, evt);
       },
     },
     user.getUserId(),
@@ -200,7 +200,6 @@ const popupAvatar = new PopupWithForm({
         avatar: obj.avatar,
       })
       .then((res) => {
-        //user.setUserAvatar(res)
         user.setUserInfo(res);
       })
       .then(() => {
