@@ -14,6 +14,7 @@ export default class FormValidator {
   }
 
   _hideInputError(elem) {
+    console.log(elem);
     elem.classList.remove(this._formConfig.inputErrorClass);
     this._errorElement.classList.remove(this._formConfig.errorClass);
     this._errorElement.textContent = "";
@@ -73,6 +74,21 @@ export default class FormValidator {
     });
     this._setEventListeners();
   }
-}
 
-//Для каждой проверяемой формы создавайте экземпляр класса FormValidator.
+  //Для каждой проверяемой формы создавайте экземпляр класса FormValidator.
+
+  //находит и стирает сообщение об ошибке в форме при закрытии попапа
+  dellInputErr() {
+    if (
+      this._inputList.some((input) => {
+        return input.classList.contains("popup__input_type_error");
+      })
+    ) {
+      this._inputList.forEach((item) => {
+        item.classList.remove("popup__input_type_error");
+      });
+
+      this._errorElement.textContent = "";
+    }
+  }
+}

@@ -44,9 +44,18 @@ export default class PopupWithForm extends Popup {
     super.close();
     this._elementForm.reset();
 
+    this._inputList = Array.from(
+      this._element.querySelectorAll(".popup__input")
+    );
+    this._inputList.forEach((input) =>
+      this.formValid._checkInputValidity(input)
+    );
+
+    //console.log(this._element.querySelector(".popup__input"));
+
     //находит и стирает сообщение об ошибке в форме при закрытии попапа
 
-    if (
+    /* if (
       Array.from(this._element.querySelectorAll(".popup__input")).some(
         (input) => {
           return input.classList.contains("popup__input_type_error");
@@ -64,7 +73,7 @@ export default class PopupWithForm extends Popup {
       ).forEach((item) => {
         item.classList.remove("popup__error_visible");
       });
-    }
+    }*/
   }
 }
 
