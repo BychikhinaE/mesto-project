@@ -8,9 +8,9 @@ export default class PopupWithImage extends Popup {
   }
 
   open(card) {
-    this._fieldPhoto.src = card.src;
-    this._fieldSubtitle.textContent = card.alt;
-    this._fieldPhoto.alt = card.alt;
+    this._fieldPhoto.src = card._url;
+    this._fieldSubtitle.textContent = card._name;
+    this._fieldPhoto.alt = card._name;
     super.open();
   }
 }

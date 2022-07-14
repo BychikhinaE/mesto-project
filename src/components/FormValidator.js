@@ -4,27 +4,32 @@ export default class FormValidator {
   constructor(formConfig, formSelector) {
     this._formConfig = formConfig;
     this._formSelector = formSelector;
+    this._formElement = document.querySelector(this._formSelector);
+    this._inputList = Array.from(
+      this._formElement.querySelectorAll(this._formConfig.inputSelector)
+    );
   }
   //имеет приватные методы, которые обрабатывают форму: проверяют валидность поля,
   //изменяют состояние кнопки сабмита, устанавливают все обработчики;
   _showInputError(elem) {
+    const errorElement = this._formElement.querySelector(`.${elem.id}-error`);
     elem.classList.add(this._formConfig.inputErrorClass);
-    this._errorElement.textContent = elem.validationMessage;
-    this._errorElement.classList.add(this._formConfig.errorClass);
+    errorElement.textContent = elem.validationMessage;
+    errorElement.classList.add(this._formConfig.errorClass);
   }
 
-  _hideInputError(elem) {
+  hideInputError(elem) {
+    const errorElement = this._formElement.querySelector(`.${elem.id}-error`);
     elem.classList.remove(this._formConfig.inputErrorClass);
-    this._errorElement.classList.remove(this._formConfig.errorClass);
-    this._errorElement.textContent = "";
+    errorElement.classList.remove(this._formConfig.errorClass);
+    errorElement.textContent = "";
   }
 
   _checkInputValidity(elem) {
-    this._errorElement = this._formElement.querySelector(`.${elem.id}-error`);
     if (!elem.validity.valid) {
       this._showInputError(elem);
     } else {
-      this._hideInputError(elem);
+      this.hideInputError(elem);
     }
   }
 
@@ -47,9 +52,6 @@ export default class FormValidator {
   }
 
   _setEventListeners() {
-    this._inputList = Array.from(
-      this._formElement.querySelectorAll(this._formConfig.inputSelector)
-    );
     this._buttonElement = this._formElement.querySelector(
       this._formConfig.submitButtonSelector
     );
@@ -67,7 +69,6 @@ export default class FormValidator {
   }
   //имеет публичный метод enableValidation, который включает валидацию формы.
   enableValidation() {
-    this._formElement = document.querySelector(this._formSelector);
     this._formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });

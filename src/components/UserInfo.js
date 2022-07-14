@@ -7,16 +7,16 @@ export default class UserInfo {
     this._selectorName = selectorName;
     this._selectorBio = selectorBio;
     this._selectorAvatar = selectorAvatar;
-    this.fieldName = document.querySelector(this._selectorName);
-    this.fieldBio = document.querySelector(this._selectorBio);
-    this.fieldAvatar = document.querySelector(this._selectorAvatar);
+    this._fieldName = document.querySelector(this._selectorName);
+    this._fieldBio = document.querySelector(this._selectorBio);
+    this._fieldAvatar = document.querySelector(this._selectorAvatar);
   }
 
   setUserInfo(userData) {
     this._userData = userData;
-    this.fieldName.textContent = this._userData.name;
-    this.fieldBio.textContent = this._userData.about;
-    this.fieldAvatar.style.backgroundImage = `url(${this._userData.avatar})`;
+    this._fieldName.textContent = this._userData.name;
+    this._fieldBio.textContent = this._userData.about;
+    this._fieldAvatar.style.backgroundImage = `url(${this._userData.avatar})`;
   }
 
   getUserInfo() {

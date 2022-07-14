@@ -46,10 +46,9 @@ const popupWithImade = new PopupWithImage(".popup_type_photo");
 //добавляем слушатель клика иконке закрытия попапа с фоткой один раз и на всю жизнь
 popupWithImade.setEventListeners();
 
-//НЕкоторый функционал
 //Колбэк клика по кнопке лайк для экземпляра Card
 function toggleLike(card) {
-  if (card._cardLike.classList.contains("elements__like_act")) {
+  if (card.checkMyLike()) {
     api
       .disLike(card._card_id)
       .then((res) => {
@@ -70,15 +69,16 @@ function toggleLike(card) {
   }
 }
 
+
 //Экземпляр модального с вопросом-подтверждением удаления?
 const popupDelete = new PopupDelete({
   selector: ".popup_type_delete",
-  handleFormSubmit: (card, evt) => {
+  handleFormSubmit: (card) => {
     api
       .deleteCard(card._card_id)
       .then(() => {
         popupDelete.close();
-        card.deleteCardDOM(evt);
+        card.deleteCardDOM();
       })
       .catch((err) => {
         showError(err);
@@ -87,33 +87,36 @@ const popupDelete = new PopupDelete({
 });
 
 //Колбэк для экземпляра Card, кликнишь и позовется дальше  handleFormSubmit с 76 строчки
-function showQuestion(card, evt) {
-  popupDelete.setEventListeners(card, evt);
+function showQuestion(card) {
+  popupDelete.setEventListeners(card);
   popupDelete.open();
 }
 
 // Функция создания экземпляра карточки
 function createCard(item) {
   // Создаём экземпляр карточки
-  return new Card(
+  const card =  new Card(
     {
       data: item,
 
-      handleCardClick: (evt) => {
-        popupWithImade.open(evt.target);
+      handleCardClick: function ()  {
+        popupWithImade.open(this);
       },
 
       functionLike: function () {
         toggleLike(this);
       },
 
-      functionDelete: function (evt) {
-        showQuestion(this, evt);
+      functionDelete: function () {
+        showQuestion(this);
       },
     },
     user.getUserId(),
     "#card-template"
   )
+  const cardElement = card.generate();
+  // Добавляем в DOM
+  cardsList.addItem(cardElement);
 }
 
 //Загрузить данные пользователя и карточки, создаем экземпляры user = new UserInfo и cardsList = new Section
@@ -131,11 +134,7 @@ Promise.all([api.startLoad(), api.loadCards()])
       {
         items: cards.reverse(),
         renderer: (item) => {
-          const card = createCard(item)
-          // Создаём карточку и возвращаем её наружу
-          const cardElement = card.generate();
-          // Добавляем в DOM
-          cardsList.addItem(cardElement);
+          createCard(item);
         },
       },
       ".elements"
@@ -157,14 +156,8 @@ const popupPlace = new PopupWithForm({
         link: obj.link,
       })
       .then((item) => {
-        const card = createCard(item)
-          // Создаём карточку и возвращаем её наружу
-        const cardElement = card.generate();
-          // Добавляем в DOM
-        cardsList.addItem(cardElement);
-
+        createCard(item);
         popupPlace.close();
-        placeValidator.toggleButtonState();
       })
       .catch((err) => {
         showError(err);
@@ -173,9 +166,10 @@ const popupPlace = new PopupWithForm({
         showSpinner(false);
       });
   },
+  objValid: placeValidator
 });
-popupPlace.setEventListeners();
-buttonAdd.addEventListener("click", function () {
+  popupPlace.setEventListeners();
+  buttonAdd.addEventListener("click", () => {
   popupPlace.open();
 });
 
@@ -193,7 +187,6 @@ const popupAvatar = new PopupWithForm({
       })
       .then(() => {
         popupAvatar.close();
-        avatarValidator.toggleButtonState();
       })
       .catch((err) => {
         showError(err);
@@ -202,9 +195,10 @@ const popupAvatar = new PopupWithForm({
         renderLoading(false, buttonSubmitAvatar);
       });
   },
+  objValid: avatarValidator
 });
-popupAvatar.setEventListeners();
-buttonAvatar.addEventListener("click", function () {
+  popupAvatar.setEventListeners();
+  buttonAvatar.addEventListener("click", () => {
   popupAvatar.open();
 });
 
@@ -231,11 +225,13 @@ const popupProfile = new PopupWithForm({
         renderLoading(false, buttonSubmitProfile);
       });
   },
+  objValid: profileValidator
 });
-buttonEdit.addEventListener("click", function () {
+buttonEdit.addEventListener("click", () => {
   const userData = user.getUserInfo();
   userNameInput.value = userData.name;
   userBioInput.value = userData.about;
+
   profileValidator.toggleButtonState();
   popupProfile.setEventListeners();
   popupProfile.open();
