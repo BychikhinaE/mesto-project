@@ -6,21 +6,21 @@ export default class Api {
   }
 
   //Загрузка информации о пользователе с сервера
-  startLoad = () => {
+  startLoad() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
     }).then(getResponse);
   };
 
   //Загрузка карточек с сервера
-  loadCards = () => {
+  loadCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     }).then(getResponse);
   };
 
   // Редактирование профиля
-  editProfile = (myProfile) => {
+  editProfile(myProfile)  {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
@@ -32,7 +32,7 @@ export default class Api {
   };
 
   // Редактирование аватарки
-  editAvatar = (myProfile) => {
+  editAvatar(myProfile) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
@@ -43,7 +43,7 @@ export default class Api {
   };
 
   //Опубликовать новую карточку -промис
-  postNewCard = (myPost) => {
+  postNewCard(myPost) {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
@@ -55,7 +55,7 @@ export default class Api {
   };
 
   //Удалить карточку -промис
-  deleteCard = (cardId) => {
+  deleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
@@ -63,7 +63,7 @@ export default class Api {
   };
 
   //Постановка лайка
-  plusLike = (cardId) => {
+  plusLike(cardId) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       method: "PUT",
       headers: this._headers,
@@ -71,7 +71,7 @@ export default class Api {
   };
 
   //Убираем лайк
-  disLike = (cardId) => {
+  disLike(cardId) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       method: "DELETE",
       headers: this._headers,

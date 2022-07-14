@@ -46,7 +46,6 @@ const popupWithImade = new PopupWithImage(".popup_type_photo");
 //добавляем слушатель клика иконке закрытия попапа с фоткой один раз и на всю жизнь
 popupWithImade.setEventListeners();
 
-//НЕкоторый функционал
 //Колбэк клика по кнопке лайк для экземпляра Card
 function toggleLike(card) {
   if (card.checkMyLike()) {
@@ -69,6 +68,7 @@ function toggleLike(card) {
       });
   }
 }
+
 
 //Экземпляр модального с вопросом-подтверждением удаления?
 const popupDelete = new PopupDelete({
@@ -134,13 +134,7 @@ Promise.all([api.startLoad(), api.loadCards()])
       {
         items: cards.reverse(),
         renderer: (item) => {
-          createCard(item)
-
-          // const card = createCard(item)
-          // // Создаём карточку и возвращаем её наружу
-          // const cardElement = card.generate();
-          // // Добавляем в DOM
-          // cardsList.addItem(cardElement);
+          createCard(item);
         },
       },
       ".elements"
@@ -162,15 +156,8 @@ const popupPlace = new PopupWithForm({
         link: obj.link,
       })
       .then((item) => {
-        createCard(item)
-        // const card = createCard(item)
-        //   // Создаём карточку и возвращаем её наружу
-        // const cardElement = card.generate();
-        //   // Добавляем в DOM
-        // cardsList.addItem(cardElement);
-
-         popupPlace.close();
-
+        createCard(item);
+        popupPlace.close();
       })
       .catch((err) => {
         showError(err);
@@ -181,8 +168,8 @@ const popupPlace = new PopupWithForm({
   },
   objValid: placeValidator
 });
-popupPlace.setEventListeners();
-buttonAdd.addEventListener("click", function () {
+  popupPlace.setEventListeners();
+  buttonAdd.addEventListener("click", () => {
   popupPlace.open();
 });
 
@@ -210,8 +197,8 @@ const popupAvatar = new PopupWithForm({
   },
   objValid: avatarValidator
 });
-popupAvatar.setEventListeners();
-buttonAvatar.addEventListener("click", function () {
+  popupAvatar.setEventListeners();
+  buttonAvatar.addEventListener("click", () => {
   popupAvatar.open();
 });
 
@@ -240,10 +227,11 @@ const popupProfile = new PopupWithForm({
   },
   objValid: profileValidator
 });
-buttonEdit.addEventListener("click", function () {
+buttonEdit.addEventListener("click", () => {
   const userData = user.getUserInfo();
   userNameInput.value = userData.name;
   userBioInput.value = userData.about;
+
   profileValidator.toggleButtonState();
   popupProfile.setEventListeners();
   popupProfile.open();

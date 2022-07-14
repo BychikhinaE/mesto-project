@@ -54,7 +54,7 @@ export default class Card {
     return this._element;
   }
 
-  _setEventListeners = () => {
+  _setEventListeners() {
     this._deleteButton.addEventListener("click", () => {
       this._checkDelete();
     });
@@ -71,18 +71,17 @@ export default class Card {
 
 //получает с сервера кол-во лайков у карточки и передает в соответствующее поле DOM-элемента
 //также меняет цвет-статус иконки лайка
-  changeCountLike(res){
+  changeCountLike(res) {
     this._cardCountLike.textContent = res.likes.length;
     this._cardLike.classList.toggle("elements__like_act");
   }
 
-  deleteCardDOM(){
+  deleteCardDOM() {
     this._element.remove();
     this._element = null
-   // evt.target.closest(".elements__card").remove();
   }
 
-  checkMyLike(){
+  checkMyLike() {
     return this._cardLike.classList.contains("elements__like_act")
   }
 

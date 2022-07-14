@@ -20,23 +20,21 @@ export default class Popup {
   }
 
 //содержит логику закрытия попапа клавишей Esc
-  _handleEscClose=(evt) =>{
+  _handleEscClose = (evt) => {
     if (evt.key === 'Escape') {
-      this.close()
-      // const openedPopup = document.querySelector('.popup_opened');
-      // this.close(openedPopup);
+      this.close();
     }
   }
 
   //Модальное окно также закрывается при клике на затемнённую область вокруг формы
-  _closeClickBlack=(evt) =>{
+  _closeClickBlack = (evt) => {
     if(evt.target === evt.currentTarget) {
-      this.close()
+      this.close();
     }
   }
   //публичный метод setEventListeners  добавляет слушатель клика иконке закрытия попапа.
   setEventListeners (){
-    this._buttonClose.addEventListener('click', ()=>{
+    this._buttonClose.addEventListener('click', () => {
       this.close();
     })
   }
