@@ -113,7 +113,7 @@ function createCard(item) {
     },
     user.getUserId(),
     "#card-template"
-  )
+  );
 }
 
 //Загрузить данные пользователя и карточки, создаем экземпляры user = new UserInfo и cardsList = new Section
@@ -131,7 +131,7 @@ Promise.all([api.startLoad(), api.loadCards()])
       {
         items: cards.reverse(),
         renderer: (item) => {
-          const card = createCard(item)
+          const card = createCard(item);
           // Создаём карточку и возвращаем её наружу
           const cardElement = card.generate();
           // Добавляем в DOM
@@ -157,10 +157,10 @@ const popupPlace = new PopupWithForm({
         link: obj.link,
       })
       .then((item) => {
-        const card = createCard(item)
-          // Создаём карточку и возвращаем её наружу
+        const card = createCard(item);
+        // Создаём карточку и возвращаем её наружу
         const cardElement = card.generate();
-          // Добавляем в DOM
+        // Добавляем в DOM
         cardsList.addItem(cardElement);
 
         popupPlace.close();
