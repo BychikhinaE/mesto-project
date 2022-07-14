@@ -1,11 +1,12 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithForm extends Popup {
-  constructor({ selector, handleFormSubmit }) //селектора попапа
-  // колбэк сабмита формы.В этом колбэке содержится метод класса Api.
-  {
+  constructor(
+    { selector, handleFormSubmit } //селектора попапа // колбэк сабмита формы.В этом колбэке содержится метод класса Api.
+  ) {
     super(selector);
     this._handleFormSubmit = handleFormSubmit;
+    this._elementForm = this._element.querySelector(".popup__form");
   }
 
   //приватный метод _getInputValues, который собирает данные всех полей формы
@@ -41,7 +42,7 @@ export default class PopupWithForm extends Popup {
   //так как при закрытии попапа форма должна ещё и сбрасываться.
   close() {
     super.close();
-    this._element.querySelector(".popup__form").reset();
+    this._elementForm.reset();
 
     //находит и стирает сообщение об ошибке в форме при закрытии попапа
 
