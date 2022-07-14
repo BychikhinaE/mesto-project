@@ -43,16 +43,16 @@ export default class PopupWithForm extends Popup {
   close() {
     super.close();
     this._elementForm.reset();
+
     this._inputList.forEach(
       (inputElement) => {
-        if(!inputElement.validity.valid
-          //inputElement.classList.contains('popup__input_type_error')
+        if(
+          inputElement.classList.contains('popup__input_type_error')
           ){
-          console.log(inputElement)
           this._formValid._hideInputError(inputElement)}
         }
+    );
 
-    )
     this._formValid.toggleButtonState();
   }
 }
