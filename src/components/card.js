@@ -55,16 +55,16 @@ export default class Card {
   }
 
   _setEventListeners = () => {
-    this._deleteButton.addEventListener("click", (evt) => {
-      this._checkDelete(evt);
+    this._deleteButton.addEventListener("click", () => {
+      this._checkDelete();
     });
 
     this._cardLike.addEventListener("click", () => {
       this._like();
     });
 
-    this._cardPhoto.addEventListener("click", (evt) => {
-      this._handleCardClick(evt);
+    this._cardPhoto.addEventListener("click", () => {
+      this._handleCardClick();
 
     });
   };
@@ -76,8 +76,14 @@ export default class Card {
     this._cardLike.classList.toggle("elements__like_act");
   }
 
-  deleteCardDOM(evt){
-    evt.target.closest(".elements__card").remove();
+  deleteCardDOM(){
+    this._element.remove();
+    this._element = null
+   // evt.target.closest(".elements__card").remove();
+  }
+
+  checkMyLike(){
+    return this._cardLike.classList.contains("elements__like_act")
   }
 
 }

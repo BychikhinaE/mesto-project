@@ -12,8 +12,8 @@ export default class PopupDelete extends Popup {
   //Перезаписывает родительский метод setEventListeners. Метод setEventListeners класса
   //PopupWithForm должен не только
   //добавлять обработчик клика иконке закрытия, но и добавлять обработчик сабмита формы.
-  setEventListeners(card, evt) {
-    this.callback = () => this._handleFormSubmit(card, evt);
+  setEventListeners(card) {
+    this.callback = () => this._handleFormSubmit(card);
     this._buttonDelete.addEventListener("click", this.callback);
     super.setEventListeners();
   }

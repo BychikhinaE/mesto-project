@@ -1,19 +1,20 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithForm extends Popup {
-  constructor({ selector, handleFormSubmit }) //селектора попапа
+  constructor({ selector, handleFormSubmit,  objValid }) //селектора попапа
   // колбэк сабмита формы.В этом колбэке содержится метод класса Api.
   {
     super(selector);
     this._handleFormSubmit = handleFormSubmit;
+    this._elementForm = this._element.querySelector('.popup__form')
+    this._formValid = objValid
+     // достаём все элементы полей
+    this._inputList = Array.from(this._element.querySelectorAll(".popup__input")
+    );
   }
 
   //приватный метод _getInputValues, который собирает данные всех полей формы
   _getInputValues() {
-    // достаём все элементы полей
-    this._inputList = Array.from(
-      this._element.querySelectorAll(".popup__input")
-    );
     // создаём пустой объект
     this._formValues = {};
     // добавляем в этот объект значения всех полей
@@ -41,31 +42,21 @@ export default class PopupWithForm extends Popup {
   //так как при закрытии попапа форма должна ещё и сбрасываться.
   close() {
     super.close();
-    this._element.querySelector(".popup__form").reset();
-
-    //находит и стирает сообщение об ошибке в форме при закрытии попапа
-
-    if (
-      Array.from(this._element.querySelectorAll(".popup__input")).some(
-        (input) => {
-          return input.classList.contains("popup__input_type_error");
+    this._elementForm.reset();
+    this._inputList.forEach(
+      (inputElement) => {
+        if(!inputElement.validity.valid
+          //inputElement.classList.contains('popup__input_type_error')
+          ){
+          console.log(inputElement)
+          this._formValid._hideInputError(inputElement)}
         }
-      )
-    ) {
-      Array.from(
-        this._element.querySelectorAll(".popup__input_type_error")
-      ).forEach((item) => {
-        item.classList.remove("popup__input_type_error");
-      });
 
-      Array.from(
-        this._element.querySelectorAll(".popup__error_visible")
-      ).forEach((item) => {
-        item.classList.remove("popup__error_visible");
-      });
-    }
+    )
+    this._formValid.toggleButtonState();
   }
 }
+
 
 //Для каждого попапа создавайте свой экземпляр класса PopupWithForm
 //Экземпляры классов создаются в файле index.js.
