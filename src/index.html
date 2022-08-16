@@ -25,8 +25,8 @@
 
           <div class="profile__place-info">
             <div class="profile__info">
-              <h1 class="profile__name">Жак-Ив Кусто</h1>
-              <p class="profile__bio">Исследователь океана</p>
+              <h1 class="profile__name">Name</h1>
+              <p class="profile__bio">About me</p>
             </div>
             <button type="button" class="profile__edit" aria-label="Редактировать профиль."></button>
           </div>
@@ -50,12 +50,12 @@
       <div class="popup popup_type_avatar">
         <div class="popup__container popup__container_type_main">
           <h2 class="popup__title">Обновить аватар</h2>
-          <form class="popup__form" name="avatar" novalidate>
+          <form class="popup__form" name="avatar" novalidate id="formAvatar">
             <div class="popup__set">
               <input type="url" placeholder="Ссылка на фото" name="avatar" required class="popup__input" id="avatar">
               <span class="popup__error avatar-error"></span>
             </div>
-           <button type="submit" class="popup__button popup__button_disabled">Сохранить</button>
+           <button type="submit" class="popup__button">Сохранить</button>
           </form>
           <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>
@@ -65,21 +65,21 @@
       <div class="popup popup_type_profile">
         <div class="popup__container popup__container_type_main">
           <h2 class="popup__title">Редактировать профиль</h2>
-          <form class="popup__form" autocomplete="on" name="profile" novalidate>
+          <form class="popup__form" autocomplete="on" name="profile" novalidate id="formProfile">
             <div class="popup__set">
-              <input type="text" value="Жак-Ив Кусто" name="name" required class="popup__input" id="name"
+              <input type="text" value="" name="name" required class="popup__input" id="name"
                minlength="2" maxlength="40">
               <span class="popup__error name-error"></span>
             </div>
 
 
            <div class="popup__set">
-              <input type="text" value="Исследователь океана" name="bio" required class="popup__input" id="bio"
+              <input type="text" value="" name="bio" required class="popup__input" id="bio"
                minlength="2" maxlength="200">
               <span class="popup__error bio-error"></span>
           </div>
 
-           <button type="submit" class="popup__button"  name="buttonSubmitProfile">Сохранить</button>
+           <button type="submit" class="popup__button">Сохранить</button>
           </form>
           <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>
@@ -99,7 +99,7 @@
               <input type="url" placeholder="Ссылка на картинку" name="link" required class="popup__input" id="link">
               <span class="popup__error link-error"></span>
             </div>
-           <button type="submit" class="popup__button popup__button_disabled" name="buttonCreatePlace">Создать</button>
+           <button type="submit" class="popup__button">Создать</button>
           </form>
           <button class="popup__close" type="button" aria-label="Закрыть окно."></button>
         </div>

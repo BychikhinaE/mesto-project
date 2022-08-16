@@ -1,93 +1,88 @@
-// функции для работы с карточками проекта Mesto
-//объявить функию для создания карточки
-import {openPopup} from './utils';
-import {profileName,} from './modal.js'
-import { plusLike, disLike} from './api'
+export default class Card {
+  constructor({ data, handleCardClick, functionLike, functionDelete }, checkId, selector) {
+    this._name = data.name;
+    this._url = data.link;
+    this._countLike = data.likes;
+    this._ownerId = data.owner._id;
+    this._card_id = data._id;
+    this._selector = selector;
+    this._handleCardClick = handleCardClick;
+    this._checkId = checkId;
+    this._like = functionLike;
+    this._checkDelete = functionDelete;
+   }
 
-export const popupPlace = document.querySelector('.popup_type_place');
-export const popupQuestionDelete = document.querySelector('.popup_type_delete');
-export const buttonQuestionDelete = popupQuestionDelete.querySelector('#questionDelete');
-export const formPlace = document.forms.formPlace;
-export const buttonCreatePlace = formPlace.querySelector('.popup__button');
-const cardsContainer = document.querySelector('.elements');
-const fullPhoto = document.querySelector('.popup_type_photo');
-const popupPhoto = fullPhoto.querySelector('.popup__photo');
-const subtitlePhoto = fullPhoto.querySelector('.popup__subtitle');
-const buttonAdd = document.querySelector('.profile__add');
-const cardTemplate = document.querySelector('#card-template').content;
-export let cardIdDelete = 0;
+  _getElement() {
+    const cardElement = document
+      .querySelector(this._selector)
+      .content.querySelector(".elements__card")
+      .cloneNode(true);
 
- //добавить кнопкe Плюс_карточка функцию Открыть попап
- buttonAdd.addEventListener('click', function () {
-  openPopup(popupPlace);
-});
+    return cardElement;
+  }
+  //публичный метод, который возвращает полностью работоспособный
+  //и наполненный данными элемент карточки
+  generate() {
+    // Запишем разметку в приватное поле _element
+    this._element = this._getElement();
 
-//Функция создания новой карточки
-function createCard(nameValue, urlValue, countLike, ownerId, card_id) {
-  const cardElement = cardTemplate.querySelector('.elements__card').cloneNode(true);
+    // Добавим данные
+    this._element.querySelector(".elements__title").textContent = this._name;
+    this._cardPhoto = this._element.querySelector(".elements__photo");
+    this._cardPhoto.alt = this._name;
+    this._cardPhoto.src = this._url;
+    this._cardCountLike = this._element.querySelector(".elements__count-like");
+    this._cardCountLike.textContent = this._countLike.length;
 
-  const cardCountLike = cardElement.querySelector('.elements__count-like');
-  const cardLike = cardElement.querySelector('.elements__like');
-  const cardPhoto = cardElement.querySelector('.elements__photo');
-  const deleteButton = cardElement.querySelector('.elements__delete');
-
-  cardElement.querySelector('.elements__title').textContent = nameValue;
-  cardPhoto.alt = nameValue;
-  cardPhoto.src = urlValue;
-  cardCountLike.textContent = countLike.length;
-  cardElement.dataset.cardOwnerId =  ownerId;
-  cardElement.dataset.cardId = card_id;
-
-  if(cardElement.dataset.cardOwnerId  !== profileName.dataset.myId )
-  {deleteButton.style.display = 'none'} else{
-    deleteButton.style.display = 'block';
-    deleteButton.addEventListener('click', function () {
-      openPopup(popupQuestionDelete);
-      cardIdDelete =  cardElement.dataset.cardId;
-    });
+    this._cardLike = this._element.querySelector(".elements__like");
+    this._deleteButton = this._element.querySelector(".elements__delete");
+    //добавить активный лайк, если карточка наша и мы ее лайкали
+    if (
+      this._countLike.some((item) => {
+        return item._id === this._checkId;
+      })
+    ) {
+      this._cardLike.classList.add("elements__like_act");
+    }
+    //добавить корзину, если карточка наша
+    if (this._ownerId !== this._checkId) {
+      this._deleteButton.style.display = "none";
+    } else {
+      this._deleteButton.style.display = "block";
+    }
+    this._setEventListeners();
+    return this._element;
   }
 
-  if( countLike.some(function(item){
-      return item._id === profileName.dataset.myId})
-    )
-  {cardLike.classList.add('elements__like_act')}
-
-  cardLike.addEventListener('click', function () {
-    if( cardLike.classList.contains('elements__like_act'))
-      {
-      disLike(cardElement.dataset.cardId)
-      .then((res)=>{
-        cardCountLike.textContent = res.likes.length;
-        cardLike.classList.remove('elements__like_act');
-      })
-      .catch(err => {
-        showError(err)
-      })
-
-    } else {
-      plusLike(cardElement.dataset.cardId)
-      .then((res)=>{
-        cardCountLike.textContent = res.likes.length;
-        cardLike.classList.add('elements__like_act');
-      })
-      .catch(err => {
-        showError(err)
-      })
-     }
-  });
-
-  cardPhoto.addEventListener('click', function () {
-    popupPhoto.src = urlValue;
-    popupPhoto.alt = nameValue;
-    subtitlePhoto.textContent = nameValue;
-    openPopup(fullPhoto);
+  _setEventListeners() {
+    this._deleteButton.addEventListener("click", () => {
+      this._checkDelete();
     });
 
-  return cardElement;
-};
+    this._cardLike.addEventListener("click", () => {
+      this._like();
+    });
 
-//объявить функию для добавления карточки
-export function addCard(nameValue, urlValue, countLike, ownerId, card_id) {
-  cardsContainer.prepend(createCard(nameValue, urlValue, countLike, ownerId, card_id));
+    this._cardPhoto.addEventListener("click", () => {
+      this._handleCardClick();
+
+    });
+  };
+
+//получает с сервера кол-во лайков у карточки и передает в соответствующее поле DOM-элемента
+//также меняет цвет-статус иконки лайка
+  changeCountLike(res) {
+    this._cardCountLike.textContent = res.likes.length;
+    this._cardLike.classList.toggle("elements__like_act");
+  }
+
+  deleteCardDOM() {
+    this._element.remove();
+    this._element = null
+  }
+
+  checkMyLike() {
+    return this._cardLike.classList.contains("elements__like_act")
+  }
+
 }
-
